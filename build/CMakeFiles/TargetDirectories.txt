@@ -1,0 +1,3 @@
+/home/andi/SemanticAnalysis/build/CMakeFiles/rebuild_cache.dir
+/home/andi/SemanticAnalysis/build/CMakeFiles/generator.dir
+/home/andi/SemanticAnalysis/build/CMakeFiles/edit_cache.dir
