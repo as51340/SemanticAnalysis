@@ -5,4 +5,4 @@ include_directories(include)
 
 file(GLOB SOURCES "*.cpp")
 
-add_executable(generator ${SOURCES})
+add_executable(semantic ${SOURCES})

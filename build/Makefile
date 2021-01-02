@@ -111,44 +111,125 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named generator
+# Target rules for targets named semantic
 
 # Build rule for target.
-generator: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 generator
-.PHONY : generator
+semantic: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 semantic
+.PHONY : semantic
 
 # fast build rule for target.
-generator/fast:
-	$(MAKE) -f CMakeFiles/generator.dir/build.make CMakeFiles/generator.dir/build
-.PHONY : generator/fast
+semantic/fast:
+	$(MAKE) -f CMakeFiles/semantic.dir/build.make CMakeFiles/semantic.dir/build
+.PHONY : semantic/fast
 
-generator.o: generator.cpp.o
+Node.o: Node.cpp.o
 
-.PHONY : generator.o
+.PHONY : Node.o
 
 # target to build an object file
-generator.cpp.o:
-	$(MAKE) -f CMakeFiles/generator.dir/build.make CMakeFiles/generator.dir/generator.cpp.o
-.PHONY : generator.cpp.o
+Node.cpp.o:
+	$(MAKE) -f CMakeFiles/semantic.dir/build.make CMakeFiles/semantic.dir/Node.cpp.o
+.PHONY : Node.cpp.o
 
-generator.i: generator.cpp.i
+Node.i: Node.cpp.i
 
-.PHONY : generator.i
+.PHONY : Node.i
 
 # target to preprocess a source file
-generator.cpp.i:
-	$(MAKE) -f CMakeFiles/generator.dir/build.make CMakeFiles/generator.dir/generator.cpp.i
-.PHONY : generator.cpp.i
+Node.cpp.i:
+	$(MAKE) -f CMakeFiles/semantic.dir/build.make CMakeFiles/semantic.dir/Node.cpp.i
+.PHONY : Node.cpp.i
 
-generator.s: generator.cpp.s
+Node.s: Node.cpp.s
 
-.PHONY : generator.s
+.PHONY : Node.s
 
 # target to generate assembly for a file
-generator.cpp.s:
-	$(MAKE) -f CMakeFiles/generator.dir/build.make CMakeFiles/generator.dir/generator.cpp.s
-.PHONY : generator.cpp.s
+Node.cpp.s:
+	$(MAKE) -f CMakeFiles/semantic.dir/build.make CMakeFiles/semantic.dir/Node.cpp.s
+.PHONY : Node.cpp.s
+
+NodeExpression.o: NodeExpression.cpp.o
+
+.PHONY : NodeExpression.o
+
+# target to build an object file
+NodeExpression.cpp.o:
+	$(MAKE) -f CMakeFiles/semantic.dir/build.make CMakeFiles/semantic.dir/NodeExpression.cpp.o
+.PHONY : NodeExpression.cpp.o
+
+NodeExpression.i: NodeExpression.cpp.i
+
+.PHONY : NodeExpression.i
+
+# target to preprocess a source file
+NodeExpression.cpp.i:
+	$(MAKE) -f CMakeFiles/semantic.dir/build.make CMakeFiles/semantic.dir/NodeExpression.cpp.i
+.PHONY : NodeExpression.cpp.i
+
+NodeExpression.s: NodeExpression.cpp.s
+
+.PHONY : NodeExpression.s
+
+# target to generate assembly for a file
+NodeExpression.cpp.s:
+	$(MAKE) -f CMakeFiles/semantic.dir/build.make CMakeFiles/semantic.dir/NodeExpression.cpp.s
+.PHONY : NodeExpression.cpp.s
+
+Tree.o: Tree.cpp.o
+
+.PHONY : Tree.o
+
+# target to build an object file
+Tree.cpp.o:
+	$(MAKE) -f CMakeFiles/semantic.dir/build.make CMakeFiles/semantic.dir/Tree.cpp.o
+.PHONY : Tree.cpp.o
+
+Tree.i: Tree.cpp.i
+
+.PHONY : Tree.i
+
+# target to preprocess a source file
+Tree.cpp.i:
+	$(MAKE) -f CMakeFiles/semantic.dir/build.make CMakeFiles/semantic.dir/Tree.cpp.i
+.PHONY : Tree.cpp.i
+
+Tree.s: Tree.cpp.s
+
+.PHONY : Tree.s
+
+# target to generate assembly for a file
+Tree.cpp.s:
+	$(MAKE) -f CMakeFiles/semantic.dir/build.make CMakeFiles/semantic.dir/Tree.cpp.s
+.PHONY : Tree.cpp.s
+
+main.o: main.cpp.o
+
+.PHONY : main.o
+
+# target to build an object file
+main.cpp.o:
+	$(MAKE) -f CMakeFiles/semantic.dir/build.make CMakeFiles/semantic.dir/main.cpp.o
+.PHONY : main.cpp.o
+
+main.i: main.cpp.i
+
+.PHONY : main.i
+
+# target to preprocess a source file
+main.cpp.i:
+	$(MAKE) -f CMakeFiles/semantic.dir/build.make CMakeFiles/semantic.dir/main.cpp.i
+.PHONY : main.cpp.i
+
+main.s: main.cpp.s
+
+.PHONY : main.s
+
+# target to generate assembly for a file
+main.cpp.s:
+	$(MAKE) -f CMakeFiles/semantic.dir/build.make CMakeFiles/semantic.dir/main.cpp.s
+.PHONY : main.cpp.s
 
 # Help Target
 help:
@@ -157,11 +238,20 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... generator"
+	@echo "... semantic"
 	@echo "... edit_cache"
-	@echo "... generator.o"
-	@echo "... generator.i"
-	@echo "... generator.s"
+	@echo "... Node.o"
+	@echo "... Node.i"
+	@echo "... Node.s"
+	@echo "... NodeExpression.o"
+	@echo "... NodeExpression.i"
+	@echo "... NodeExpression.s"
+	@echo "... Tree.o"
+	@echo "... Tree.i"
+	@echo "... Tree.s"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
 .PHONY : help
 
 

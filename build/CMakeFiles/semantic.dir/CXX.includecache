@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/andi/SemanticAnalysis/Node.h
+vector
+-
+memory
+-
+unordered_map
+-
+string
+-
+fstream
+-
+NodeExpression.h
+/home/andi/SemanticAnalysis/NodeExpression.h
+
+/home/andi/SemanticAnalysis/NodeExpression.h
+vector
+-
+string
+-
+memory
+-
+
+/home/andi/SemanticAnalysis/Tree.cpp
+Tree.h
+/home/andi/SemanticAnalysis/Tree.h
+
+/home/andi/SemanticAnalysis/Tree.h
+memory
+-
+Node.h
+/home/andi/SemanticAnalysis/Node.h
+
