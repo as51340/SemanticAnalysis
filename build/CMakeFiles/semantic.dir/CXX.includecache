@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+/home/andi/SemanticAnalysis/Node.cpp
+Node.h
+/home/andi/SemanticAnalysis/Node.h
+
 /home/andi/SemanticAnalysis/Node.h
 vector
 -
@@ -17,6 +21,10 @@ string
 -
 fstream
 -
+NodeExpression.h
+/home/andi/SemanticAnalysis/NodeExpression.h
+
+/home/andi/SemanticAnalysis/NodeExpression.cpp
 NodeExpression.h
 /home/andi/SemanticAnalysis/NodeExpression.h
 

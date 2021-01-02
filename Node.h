@@ -6,15 +6,15 @@
 #include <fstream>
 #include "NodeExpression.h"
 
+
 class Node {
     
 public:
     
     //syntax properties
-    std::string unifSign = ""; //not assigned
     std::string lexUnit = ""; //not assigned
     long rowNumber = -1; //not assigned
-    std::string grammarSign = ""; //not assigned
+    std::string grammarSign = ""; //not assigned, na temelju toga odlucujes kako dalje
     
     //semantic properties
     std::vector<std::shared_ptr<Node>> children;
@@ -30,9 +30,7 @@ public:
     
     bool isTerminal();
     
-    void addAllChildren(std::vector<Node>);
-    
-    void addChild(Node);
+    void addChild(Node&);
     
     void addEpsilonChild();
     

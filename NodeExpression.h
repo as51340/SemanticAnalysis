@@ -4,22 +4,23 @@
 #include <memory>
 
 class NodeExpression {
+    
 public:
     
     std::string type;
-    std::vector<std::shared_ptr<std::string>> types;
-    bool l_express = false; //not assigned
-    std::vector<std::shared_ptr<std::string>> names;  //not assigned TODO check what other types exist 
+    std::vector<std::string> types; //string is copied when pushed to vector
+    bool l_express = false; 
+    std::vector<std::string> names;  
     
     bool isFunction = false; 
     
     
     NodeExpression();
-    NodeExpression(std::string type, bool l_express);
+    NodeExpression(std::string, bool);
     
     
-    void setTypes(std::vector<std::string> types);
+    void setTypes(std::vector<std::string>&);
 
-    void setNames(std::vector<std::string> names);
+    void setNames(std::vector<std::string>&);
     
 };

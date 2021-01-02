@@ -2,38 +2,31 @@
 
 
 Node::Node() {};
-Node::Node(std::string unifSign, std::string lexUnit, long rowNumber): unifSign(unifSign), lexUnit(lexUnit), rowNumber(rowNumber) {};
+Node::Node(std::string grammarSign, std::string lexUnit, long rowNumber): grammarSign(grammarSign), lexUnit(lexUnit), rowNumber(rowNumber) {};
 Node::Node(std::string grammarSign): grammarSign(grammarSign) {};
 
 
 bool Node::isTerminal() {
-    return grammarSign != "";
+    return rowNumber != -1;
 }
-    
-void Node::addAllChildren(std::vector<Node> children) {
-    for(Node child: children) {
-        this->children.push_back(std::make_shared<Node>(std::move(child)));
-    }
-}
-    
-void Node::addChild(Node child) {
+ 
+void Node::addChild(Node& child) {
     this->children.push_back(std::make_shared<Node>(std::move(child)));
-    
 }
 
 void Node::addEpsilonChild() {
-    Node node;
-    node.unifSign = "$";
-    std::shared_ptr<Node> child = std::make_shared<Node>(std::move(node));
+    Node* node = new (std::nothrow) Node();
+    node->grammarSign = "$";
+    std::shared_ptr<Node> child = std::make_shared<Node>(std::move(*node));
 }
 
 
 void Node::printNode(std::ostream& ofStream) {
-    if(unifSign == "$") {
+    if(grammarSign == "$") {
         ofStream << "$" << std::endl;
-    } else if(grammarSign == "") {
-        ofStream << unifSign << " " << rowNumber << " " << lexUnit << std::endl;
-    } else {
+    } else if(rowNumber != -1) { //terminal
+        ofStream << grammarSign << " " << rowNumber << " " << lexUnit << std::endl;
+    } else { //not terminal
         ofStream << grammarSign << std::endl;
     }
 }

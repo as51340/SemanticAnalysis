@@ -9,6 +9,6 @@ public:
     std::shared_ptr<Node> root;
     
     Tree();
-    Tree(Node root);
+    Tree(Node&);
     
 };
