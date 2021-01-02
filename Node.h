@@ -18,7 +18,7 @@ public:
     
     //semantic properties
     std::vector<std::shared_ptr<Node>> children;
-    std::shared_ptr<Node> parent;
+    std::shared_ptr<Node> parent = nullptr;
     std::unordered_map<std::string, NodeExpression> local;
     
     
@@ -30,9 +30,9 @@ public:
     
     bool isTerminal();
     
-    void addChild(Node&);
-    
-    void addEpsilonChild();
+    void addChild(std::shared_ptr<Node>);
     
     void printNode(std::ostream&);
+    
+    
 };

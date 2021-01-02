@@ -24,10 +24,6 @@ fstream
 NodeExpression.h
 /home/andi/SemanticAnalysis/NodeExpression.h
 
-/home/andi/SemanticAnalysis/NodeExpression.cpp
-NodeExpression.h
-/home/andi/SemanticAnalysis/NodeExpression.h
-
 /home/andi/SemanticAnalysis/NodeExpression.h
 vector
 -
@@ -35,14 +31,4 @@ string
 -
 memory
 -
-
-/home/andi/SemanticAnalysis/Tree.cpp
-Tree.h
-/home/andi/SemanticAnalysis/Tree.h
-
-/home/andi/SemanticAnalysis/Tree.h
-memory
--
-Node.h
-/home/andi/SemanticAnalysis/Node.h
 

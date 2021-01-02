@@ -14,4 +14,7 @@ CMakeFiles/semantic.dir/Tree.cpp.o
  /home/andi/SemanticAnalysis/Tree.cpp
  /home/andi/SemanticAnalysis/Tree.h
 CMakeFiles/semantic.dir/main.cpp.o
+ /home/andi/SemanticAnalysis/Node.h
+ /home/andi/SemanticAnalysis/NodeExpression.h
+ /home/andi/SemanticAnalysis/Tree.h
  /home/andi/SemanticAnalysis/main.cpp

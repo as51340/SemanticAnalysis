@@ -13,5 +13,8 @@ CMakeFiles/semantic.dir/Tree.cpp.o: ../NodeExpression.h
 CMakeFiles/semantic.dir/Tree.cpp.o: ../Tree.cpp
 CMakeFiles/semantic.dir/Tree.cpp.o: ../Tree.h
 
+CMakeFiles/semantic.dir/main.cpp.o: ../Node.h
+CMakeFiles/semantic.dir/main.cpp.o: ../NodeExpression.h
+CMakeFiles/semantic.dir/main.cpp.o: ../Tree.h
 CMakeFiles/semantic.dir/main.cpp.o: ../main.cpp
 
