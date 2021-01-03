@@ -11,7 +11,7 @@ void CompilationUnit(std::shared_ptr<Node>);
 void OuterDeclaration(std::shared_ptr<Node>);
 void FunctionDefinition(std::shared_ptr<Node>);
 void Declaration(std::shared_ptr<Node>);  // variable or function declaration
-Attributes TypeName(std::shared_ptr<Node>);
+Attributes TypeName(std::shared_ptr<Node>); //also in expressions
 void ComplexCommand(std::shared_ptr<Node>, std::vector<Parameter>);
 std::vector<Parameter> ParameterList(std::shared_ptr<Node>);
 void CommandList(std::shared_ptr<Node>);

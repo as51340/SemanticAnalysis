@@ -39,7 +39,7 @@ Attributes Node::findScope(std::string var) {
 }
 
 // prints the node production
-void Node::Error() {
+void Node::error() {
   std::cout << this->grammarSign << " ::=";
   for (auto& child : this->children) {
     std::cout << ' ' << this->grammarSign;

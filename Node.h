@@ -32,5 +32,5 @@ class Node {
 
   void printNode(std::ostream&);
   
-  void Error();
+  void error();
 };

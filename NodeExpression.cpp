@@ -2,6 +2,7 @@
 
 Attributes::Attributes(){};
 Attributes::Attributes(FullType type, bool l_expr) : type(type), l_expr(l_expr){};
+Attributes(FullType type) : type(type) {};
 
 FullType::FullType() : type(TYPE::NONE) {};
 FullType::FullType(Type type) :type(type) {};

@@ -5,11 +5,6 @@
 
 enum Type { NONE = 0, VOID, INT, CHAR };
 
-struct Parameter {
-  FullType type;
-  std::string name;
-};
-
 class FullType {
 public:
     Type type;
@@ -41,6 +36,11 @@ public:
     
 };
 
+struct Parameter {
+  FullType type;
+  std::string name;
+};
+
 class Attributes {
  public:
   // expression attributes
@@ -62,6 +62,7 @@ class Attributes {
 
   Attributes();
   Attributes(FullType, bool);
+  Attributes(FullType);
 };
 
 
