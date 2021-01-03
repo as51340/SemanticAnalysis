@@ -66,5 +66,6 @@ void parseInput() {
 
 int main(void) {
     parseInput();
+    tree->parseInput();
     return 0;
 }
