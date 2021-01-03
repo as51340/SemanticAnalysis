@@ -12,10 +12,10 @@ if cmp -s "$treeParsingFile" "$treeParsingFileCorrect"; then
 	printf 'Tree parsed correctly!'
 else
 	printf 'Tree not parsed correctly, not running test!'
-	break
+	exit 1
 fi
 cd .. #u rootu
-outputFile="build/output.out"
+outputFile="build/errors.out"
 testFile="test/"$testFolder"/test.out"
 if cmp -s "$outputFile" "$testFile"; then
 	printf 'Test passed\n'

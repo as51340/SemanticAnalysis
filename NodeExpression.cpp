@@ -9,8 +9,8 @@ FullType::FullType(Type type) :type(type) {};
 
 
 bool FullType::isTType() {
-    if(tType) return true;
-    if(type == TYPE::INT || type == TYPE::CHAR) {
+    if(tType) return true; //vec je postavljen
+    if(type == Type::INT || type == Type::CHAR) {
         return true;
     }
     return false;
@@ -33,14 +33,14 @@ bool FullType::isXType() {
 }
 
 bool FullType::isSeqXType() {
-    if(seq) {
+    if(seq) { //vec je postavljen
         return isXType();
     }
     return false;
 }
 
 bool FullType::isImplicitlyCastableToInt() {
-    if((const_expr == true && type == TYPE::INT) || type == TYPE::CHAR) {
+    if((const_expr == true && type == Type::INT) || type == Type::CHAR) {
         return true;
     }
     return false;
@@ -48,23 +48,26 @@ bool FullType::isImplicitlyCastableToInt() {
 
 
 bool FullType::isImplicitlyCastableToUnknownType(FullType fullType) {
-    if(fullType.type == TYPE::INT) {
+    if(fullType.type == Type::INT) {
         return isImplicitlyCastableToInt();
     }
-    if(isConstTType() && fullType.isTType()) {
+    if(isConstTType() && fullType.isTType() && type == fullType.type) {
         return true;
     }
-    if(isTType() && fullType.isConstTType()) {
+    if(isTType() && fullType.isConstTType() && type == fullType.type) {
         return true;
     }
-    if(seq == true && isTType() && !isConstTType() && fullType.seq == true && fullType.isConstTType()) {
+    if(seq && isTType() && !isConstTType() && fullType.seq && fullType.isConstTType() && type == fullType.type) {
         return true;
     }
     return false;
 }
 
 bool FullType::isExplicitlyCastable(FullType fullType) { //pitaj boga da li je ovo dobro
-    if(isImplicitlyCastableToUnknownType(fullType)) return true;
-    return !seq && !fullType.seq && type == Type::INT && fullType.type == Type::CHAR;
+    if(type != Type::INT || fullType.type != Type::CHAR) {
+        return false;
+    }
+    //we do not handle NA for casting
+    return true;
 }
  
