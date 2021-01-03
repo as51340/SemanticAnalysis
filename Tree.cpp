@@ -15,8 +15,7 @@ void Tree::printTree() {
     printRecursively(root, 0);
 }
 
-void printRecursively(std::shared_ptr<Node> root, short spaces) {
-    std::cout << spaces << std::endl;
+void printRecursively(std::shared_ptr<Node> root, short spaces) {    
     //std::cerr << std::string(spaces, ' ');
     ostream << std::string(spaces, ' ');
     //root->printNode(std::cerr);

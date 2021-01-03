@@ -57,9 +57,22 @@ include CMakeFiles/semantic.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/semantic.dir/flags.make
 
+CMakeFiles/semantic.dir/Functions.cpp.o: CMakeFiles/semantic.dir/flags.make
+CMakeFiles/semantic.dir/Functions.cpp.o: ../Functions.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/andi/SemanticAnalysis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/semantic.dir/Functions.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/semantic.dir/Functions.cpp.o -c /home/andi/SemanticAnalysis/Functions.cpp
+
+CMakeFiles/semantic.dir/Functions.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/semantic.dir/Functions.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/andi/SemanticAnalysis/Functions.cpp > CMakeFiles/semantic.dir/Functions.cpp.i
+
+CMakeFiles/semantic.dir/Functions.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/semantic.dir/Functions.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/andi/SemanticAnalysis/Functions.cpp -o CMakeFiles/semantic.dir/Functions.cpp.s
+
 CMakeFiles/semantic.dir/Node.cpp.o: CMakeFiles/semantic.dir/flags.make
 CMakeFiles/semantic.dir/Node.cpp.o: ../Node.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/andi/SemanticAnalysis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/semantic.dir/Node.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/andi/SemanticAnalysis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/semantic.dir/Node.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/semantic.dir/Node.cpp.o -c /home/andi/SemanticAnalysis/Node.cpp
 
 CMakeFiles/semantic.dir/Node.cpp.i: cmake_force
@@ -72,7 +85,7 @@ CMakeFiles/semantic.dir/Node.cpp.s: cmake_force
 
 CMakeFiles/semantic.dir/NodeExpression.cpp.o: CMakeFiles/semantic.dir/flags.make
 CMakeFiles/semantic.dir/NodeExpression.cpp.o: ../NodeExpression.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/andi/SemanticAnalysis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/semantic.dir/NodeExpression.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/andi/SemanticAnalysis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/semantic.dir/NodeExpression.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/semantic.dir/NodeExpression.cpp.o -c /home/andi/SemanticAnalysis/NodeExpression.cpp
 
 CMakeFiles/semantic.dir/NodeExpression.cpp.i: cmake_force
@@ -85,7 +98,7 @@ CMakeFiles/semantic.dir/NodeExpression.cpp.s: cmake_force
 
 CMakeFiles/semantic.dir/Tree.cpp.o: CMakeFiles/semantic.dir/flags.make
 CMakeFiles/semantic.dir/Tree.cpp.o: ../Tree.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/andi/SemanticAnalysis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/semantic.dir/Tree.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/andi/SemanticAnalysis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/semantic.dir/Tree.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/semantic.dir/Tree.cpp.o -c /home/andi/SemanticAnalysis/Tree.cpp
 
 CMakeFiles/semantic.dir/Tree.cpp.i: cmake_force
@@ -98,7 +111,7 @@ CMakeFiles/semantic.dir/Tree.cpp.s: cmake_force
 
 CMakeFiles/semantic.dir/main.cpp.o: CMakeFiles/semantic.dir/flags.make
 CMakeFiles/semantic.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/andi/SemanticAnalysis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/semantic.dir/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/andi/SemanticAnalysis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/semantic.dir/main.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/semantic.dir/main.cpp.o -c /home/andi/SemanticAnalysis/main.cpp
 
 CMakeFiles/semantic.dir/main.cpp.i: cmake_force
@@ -111,6 +124,7 @@ CMakeFiles/semantic.dir/main.cpp.s: cmake_force
 
 # Object files for target semantic
 semantic_OBJECTS = \
+"CMakeFiles/semantic.dir/Functions.cpp.o" \
 "CMakeFiles/semantic.dir/Node.cpp.o" \
 "CMakeFiles/semantic.dir/NodeExpression.cpp.o" \
 "CMakeFiles/semantic.dir/Tree.cpp.o" \
@@ -119,13 +133,14 @@ semantic_OBJECTS = \
 # External object files for target semantic
 semantic_EXTERNAL_OBJECTS =
 
+semantic: CMakeFiles/semantic.dir/Functions.cpp.o
 semantic: CMakeFiles/semantic.dir/Node.cpp.o
 semantic: CMakeFiles/semantic.dir/NodeExpression.cpp.o
 semantic: CMakeFiles/semantic.dir/Tree.cpp.o
 semantic: CMakeFiles/semantic.dir/main.cpp.o
 semantic: CMakeFiles/semantic.dir/build.make
 semantic: CMakeFiles/semantic.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/andi/SemanticAnalysis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable semantic"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/andi/SemanticAnalysis/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable semantic"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/semantic.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

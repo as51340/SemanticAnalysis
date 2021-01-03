@@ -6,29 +6,45 @@
 
 #IncludeRegexTransform: 
 
-/home/andi/SemanticAnalysis/Node.cpp
-Node.h
-/home/andi/SemanticAnalysis/Node.h
-
-/home/andi/SemanticAnalysis/Node.h
-vector
+/home/andi/SemanticAnalysis/Functions.cpp
+Functions.h
+/home/andi/SemanticAnalysis/Functions.h
+functional
 -
-memory
+iostream
 -
 unordered_map
 -
+NodeExpression.h
+/home/andi/SemanticAnalysis/NodeExpression.h
+
+/home/andi/SemanticAnalysis/Functions.h
+memory
+-
+Node.h
+/home/andi/SemanticAnalysis/Node.h
+NodeExpression.h
+/home/andi/SemanticAnalysis/NodeExpression.h
+
+/home/andi/SemanticAnalysis/Node.h
+fstream
+-
+memory
+-
 string
 -
-fstream
+unordered_map
+-
+vector
 -
 NodeExpression.h
 /home/andi/SemanticAnalysis/NodeExpression.h
 
 /home/andi/SemanticAnalysis/NodeExpression.h
-vector
+memory
 -
 string
 -
-memory
+vector
 -
 

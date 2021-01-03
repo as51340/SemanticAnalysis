@@ -123,6 +123,33 @@ semantic/fast:
 	$(MAKE) -f CMakeFiles/semantic.dir/build.make CMakeFiles/semantic.dir/build
 .PHONY : semantic/fast
 
+Functions.o: Functions.cpp.o
+
+.PHONY : Functions.o
+
+# target to build an object file
+Functions.cpp.o:
+	$(MAKE) -f CMakeFiles/semantic.dir/build.make CMakeFiles/semantic.dir/Functions.cpp.o
+.PHONY : Functions.cpp.o
+
+Functions.i: Functions.cpp.i
+
+.PHONY : Functions.i
+
+# target to preprocess a source file
+Functions.cpp.i:
+	$(MAKE) -f CMakeFiles/semantic.dir/build.make CMakeFiles/semantic.dir/Functions.cpp.i
+.PHONY : Functions.cpp.i
+
+Functions.s: Functions.cpp.s
+
+.PHONY : Functions.s
+
+# target to generate assembly for a file
+Functions.cpp.s:
+	$(MAKE) -f CMakeFiles/semantic.dir/build.make CMakeFiles/semantic.dir/Functions.cpp.s
+.PHONY : Functions.cpp.s
+
 Node.o: Node.cpp.o
 
 .PHONY : Node.o
@@ -240,6 +267,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... semantic"
 	@echo "... edit_cache"
+	@echo "... Functions.o"
+	@echo "... Functions.i"
+	@echo "... Functions.s"
 	@echo "... Node.o"
 	@echo "... Node.i"
 	@echo "... Node.s"

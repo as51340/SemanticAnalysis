@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/semantic.dir/Functions.cpp.o"
   "CMakeFiles/semantic.dir/Node.cpp.o"
   "CMakeFiles/semantic.dir/NodeExpression.cpp.o"
   "CMakeFiles/semantic.dir/Tree.cpp.o"
