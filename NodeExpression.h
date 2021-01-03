@@ -1,26 +1,28 @@
 #pragma once
-#include <vector>
-#include <string>
 #include <memory>
+#include <string>
+#include <vector>
 
-class NodeExpression {
-    
-public:
-    
-    std::string type;
-    std::vector<std::string> types; //string is copied when pushed to vector
-    bool l_express = false; 
-    std::vector<std::string> names;  
-    
-    bool isFunction = false; 
-    
-    
-    NodeExpression();
-    NodeExpression(std::string, bool);
-    
-    
-    void setTypes(std::vector<std::string>&);
+enum Type { NONE = 0, VOID, INT, CHAR };
 
-    void setNames(std::vector<std::string>&);
-    
+struct Parameter {
+  Type type;
+  std::string name;
+};
+
+class Attributes {
+ public:
+  // expression attributes
+  Type type;
+  bool l_expr = false;
+
+  bool const_expr = false;
+
+  // function attributes
+  std::vector<Parameter> parameters;  // type,name
+  Type return_type;
+  bool defined = false;
+
+  Attributes();
+  Attributes(Type, bool);
 };
