@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-
+#include <stdexcept>
 #include "NodeExpression.h"
 
 class Node {
@@ -19,6 +19,8 @@ class Node {
   std::vector<std::shared_ptr<Node>> children;
   std::shared_ptr<Node> parent = nullptr;
   std::unordered_map<std::string, Attributes> local_scope;
+  
+  Attributes findScope(std::string);
 
   Node();
   Node(std::string, std::string, long);
@@ -29,4 +31,6 @@ class Node {
   void addChild(std::shared_ptr<Node>);
 
   void printNode(std::ostream&);
+  
+  void Error();
 };

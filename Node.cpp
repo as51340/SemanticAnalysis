@@ -24,4 +24,29 @@ void Node::printNode(std::ostream& ofStream) {
     }
 }
 
+Attributes Node::findScope(std::string var) {
+    std::shared_ptr<Node> currNode = std::make_shared<Node>(*this);
+    while(true) {
+        if(currNode->local_scope.count(var)) {
+            return currNode->local_scope[var];
+        }
+        if(currNode->parent == nullptr) {
+            break;
+        }
+        currNode = currNode->parent;
+    }
+    throw std::invalid_argument("Variable doesn't exist in any scope!");
+}
+
+// prints the node production
+void Node::Error() {
+  std::cout << this->grammarSign << " ::=";
+  for (auto& child : this->children) {
+    std::cout << ' ' << this->grammarSign;
+    if (child->isTerminal())
+      std::cout << '(' << child->rowNumber << ',' << child->lexUnit << ')';
+  }
+  std::cout << std::endl;
+}
+
 

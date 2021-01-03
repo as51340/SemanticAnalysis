@@ -8,6 +8,7 @@
 #include <cctype>
 
 std::shared_ptr<Tree> tree = std::make_shared<Tree>();
+std::shared_ptr<Node> root = tree->root;
 
 void assign(std::string line, std::shared_ptr<Node> newNode) {    
     std::istringstream line_stream(line);
@@ -66,6 +67,6 @@ void parseInput() {
 
 int main(void) {
     parseInput();
-    tree->parseInput();
+    tree->printTree();
     return 0;
 }
