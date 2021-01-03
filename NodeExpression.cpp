@@ -1,7 +1,10 @@
 #include "NodeExpression.h"
 
 Attributes::Attributes(){};
-Attributes::Attributes(Type type, bool l_expr) : type(type), l_expr(l_expr){};
+Attributes::Attributes(FullType type, bool l_expr) : type(type), l_expr(l_expr){};
+
+FullType::FullType() : type(TYPE::NONE) {};
+FullType::FullType(Type type) :type(type) {};
 
 
 bool FullType::isTType() {
@@ -41,3 +44,30 @@ bool FullType::isImplicitlyCastableToInt() {
     }
     return false;
 }
+
+
+bool FullType::isImplicitlyCastableToUnknownType(FullType fullType) {
+    if(fullType.type == TYPE::INT) {
+        return isImplicitlyCastableToInt();
+    }
+    if(isConstTType() && fullType.isTType()) {
+        return true;
+    }
+    if(isTType() && fullType.isConstTType()) {
+        return true;
+    }
+    if(seq == true && isTType() && !isConstTType() && fullType.seq == true && fullType.isConstTType()) {
+        return true;
+    }
+    return false;
+}
+
+bool FullType::isExplicitlyCastable(FullType fullType) { //pitaj boga da li je ovo dobro
+    if(isConstTType()) {
+        if(fullType.isConstTType()) {
+            return true;
+        }
+        return false;
+    } return false;
+}
+ 

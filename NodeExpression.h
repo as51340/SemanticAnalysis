@@ -6,7 +6,7 @@
 enum Type { NONE = 0, VOID, INT, CHAR };
 
 struct Parameter {
-  Type type;
+  FullType type;
   std::string name;
 };
 
@@ -22,6 +22,9 @@ public:
     
     bool xType = false;
     
+    FullType();
+    FullType(Type);
+    
     bool isTType();
     
     bool isXType();
@@ -31,6 +34,10 @@ public:
     bool isSeqXType();
     
     bool isImplicitlyCastableToInt();
+    
+    bool isImplicitlyCastableToUnknownType(FullType);
+    
+    bool isExplicitlyCastable(FullType);
     
 };
 
@@ -48,10 +55,13 @@ class Attributes {
   // function attributes
   std::vector<Parameter> parameters;  // type name
   FullType return_type;
+  bool isFunction = false;
   bool defined = false;
 
+
+
   Attributes();
-  Attributes(Type, bool);
+  Attributes(FullType, bool);
 };
 
 
