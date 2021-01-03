@@ -24,6 +24,7 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
         long long num = stoi(child->lexUnit); //we assume it fits into long long
         if(num < −2147483648 || num > 2147483647) { //value is not int
             node->error();
+            exit(-1):
         } else {
             Attributes atr;
             atr.type = TYPE::INT;
@@ -38,6 +39,7 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
             return atr;
         } else {
             node->error();
+            exit(-1):
         }
     } else if(child->grammarSign == "NIZ_ZNAKOVA") {
         if(isSeqCharCorrect(child->lexUnit)) {
@@ -48,7 +50,8 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
             atr.l_expr = false;
             return atr;
         } else {
-        node->error();
+            node->error();
+            exit(-1):
         }
     } else if(child->grammarSign == "L_ZAGRADA") {
         Attributes expr_atr = Expression(node->children[1]);
@@ -72,6 +75,17 @@ Attributes PostfixExpression(std::shared_ptr<Node> node) {
         std::shared_ptr<Node> secondChild = node->children[1];
         if(secondChild->grammarSign == "L_UGL_ZAGRADA") {
             Attributes postfix_atr = PostfixExpression(firstChild);
+            if(!postfix_atr.type.isSeqXType()) {
+                node->error();
+                exit(-1):
+            }
+            Attributes expression_atr = Expression(node->children[2]);
+            if(!expression_atr.type.isImplicitlyCastableToInt()) {
+                node->error();
+                exit(-1);
+            }
+            Attributes ret_atr;
+            ret_atr.type = 
         }
     }
     

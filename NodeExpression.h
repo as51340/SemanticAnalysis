@@ -18,6 +18,10 @@ public:
   
     bool seq = false;
     
+    bool tType = false;
+    
+    bool xType = false;
+    
     bool isTType();
     
     bool isXType();
@@ -25,6 +29,8 @@ public:
     bool isConstTType();
     
     bool isSeqXType();
+    
+    bool isImplicitlyCastableToInt();
     
 };
 
