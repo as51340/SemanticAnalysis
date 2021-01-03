@@ -64,11 +64,7 @@ bool FullType::isImplicitlyCastableToUnknownType(FullType fullType) {
 }
 
 bool FullType::isExplicitlyCastable(FullType fullType) { //pitaj boga da li je ovo dobro
-    if(isConstTType()) {
-        if(fullType.isConstTType()) {
-            return true;
-        }
-        return false;
-    } return false;
+    if(isImplicitlyCastableToUnknownType(fullType)) return true;
+    return !seq && !fullType.seq && type == Type::INT && fullType.type == Type::CHAR;
 }
  

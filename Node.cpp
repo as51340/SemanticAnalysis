@@ -30,10 +30,10 @@ Attributes Node::findScope(std::string var) {
         if(currNode->local_scope.count(var)) {
             return currNode->local_scope[var];
         }
-        if(currNode->parent == nullptr) {
+        if(currNode->parent == nullptr) { //parent was met 
             break;
-        }
-        currNode = currNode->parent;
+        } 
+        currNode = currNode->parent; //move up
     }
     throw std::invalid_argument("Variable doesn't exist in any scope!");
 }
@@ -47,6 +47,7 @@ void Node::error() {
       std::cout << '(' << child->rowNumber << ',' << child->lexUnit << ')';
   }
   std::cout << std::endl;
+  exit(-1); //we need to finish program
 }
 
 
