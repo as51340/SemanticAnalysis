@@ -4,10 +4,14 @@
 
 // clang-format off
 char IsCharCorrect(std::string lexUnit) {
+    //std::cerr << "Lex unit: " << lexUnit << std::endl;
     if(lexUnit[0] == '\'') { //remove simple quotation marks '
+        //std::cerr << "YES" << std::endl;
         lexUnit = lexUnit.substr(1, lexUnit.size() - 2);
     }
-    if(lexUnit.size() == 1 && lexUnit[0] == '\\') {
+    //std::cerr << "Lex unit after substring: " << lexUnit << std::endl;
+    if(lexUnit.size() == 1 && lexUnit[0] != '\\') {
+        //std::cerr << "NO" << std::endl;
         return lexUnit[0];
     }
     if(lexUnit == "\\t") {
@@ -57,18 +61,18 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
     std::shared_ptr<Node> child = node->children[0];
     if(child->grammarSign == "IDN") {
         try {
-            return node->findScope(child->lexUnit); //if this command executes succesfully, variable exists in some scope, else we threw 
+            return child->findScope(child->lexUnit); //if this command executes succesfully, variable exists in some scope, else we threw 
             //exception and we need to print error
         } catch(const std::invalid_argument&) {
-            node->error(); //print error
             std::cerr << "Cannot find variable in scope!" << std::endl;
+            node->error(); //print error
         }
     } else if(child->grammarSign == "BROJ") {
         try {
             long long num = stoi(child->lexUnit); //we assume it fits into long long
             if(num < -2147483648 || num > 2147483647) { //value is not int
-                node->error();
                 std::cerr << "Cannot convert to int" << std::endl;
+                node->error();
             } else {
                 Attributes atr(FullType(Type::INT), false);
                 if(atr.fullType.type == Type::INT)  //i think this should be okay but for testing
@@ -76,16 +80,16 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
                 return atr;
             }
         } catch(const std::exception&) {
-            node->error(); //cannot be converted to int
             std::cerr << "Cannot convert to int" << std::endl;
+            node->error(); //cannot be converted to int
         }
     } else if(child->grammarSign == "ZNAK") {
         try {
             IsCharCorrect(child->lexUnit);
             return Attributes(FullType(Type::CHAR), false);
         } catch(const std::exception&) {
-            node->error();
             std::cerr << "Char is not correct" << std::endl;
+            node->error();
         }
         
     } else if(child->grammarSign == "NIZ_ZNAKOVA") {
@@ -98,8 +102,8 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
             atr.l_expr = false;
             return atr;
         } catch(const std::exception&) {
-            node->error();
             std::cerr << "Char sequence is not correct" << std::endl;
+            node->error();
         }
         
     } else if(child->grammarSign == "L_ZAGRADA") {
@@ -284,8 +288,8 @@ Attributes RelationalExpression(std::shared_ptr<Node> node) {
     } else if(firstChild->grammarSign == "<odnosni_izraz>") {
         Attributes rel_atr = RelationalExpression(firstChild);
         if(!rel_atr.fullType.isImplicitlyCastableToInt()) {
-            node->error();
             std::cerr << "Relational error, LINE 288" << std::endl;
+            node->error();
         }
         Attributes adi_atr = AditiveExpression(node->children[2]);
         if(!adi_atr.fullType.isImplicitlyCastableToInt()) {
@@ -304,8 +308,8 @@ Attributes EqualityExpression(std::shared_ptr<Node> node) {
     } else if(firstChild->grammarSign == "<jednakosni_izraz>") {
         Attributes equ_atr = EqualityExpression(firstChild);
         if(!equ_atr.fullType.isImplicitlyCastableToInt()) {
-            node->error();
             std::cerr << "Equality error, LINE 308" << std::endl;
+            node->error();
         }
         Attributes rel_atr = RelationalExpression(node->children[2]);
         if(!rel_atr.fullType.isImplicitlyCastableToInt()) {

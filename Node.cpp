@@ -26,12 +26,13 @@ void Node::printNode(std::ostream& ofStream) {
 Attributes Node::findScope(std::string var) {
   std::shared_ptr<Node> currNode = std::make_shared<Node>(*this);
   while (true) {
-    if (currNode->local_scope.count(var)) {
+      std::cerr << currNode->grammarSign << std::endl;
+    if (currNode->local_scope.count(var) > 0) {
       return currNode->local_scope[var];
     }
     if (currNode->parent == nullptr) {  // parent was met
       break;
-    }
+    } 
     currNode = currNode->parent;  // move up
   }
   throw std::invalid_argument("Variable doesn't exist in any scope!");

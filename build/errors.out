@@ -1,1 +1,1 @@
-<primarni_izraz> ::= ZNAK(2,'a')
+<init_deklarator> ::= <izravni_deklarator> OP_PRIDRUZI(2,=) <inicijalizator>
