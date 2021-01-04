@@ -126,8 +126,11 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
 
 
 bool checkImplicitCasting(std::vector<Parameter> types1, std::vector<Parameter> types2) {
+    //std::cerr << types1.size() << " " << types2.size() << std::endl;
+    //std::cerr << types2[0].fullType.type << std::endl;
     if(types1.size() != types2.size()) return false;
     int size = types1.size();
+    //std::cerr << "SIze: " << size << std::endl;
     for(int i = 0; i < size; i++) {
         if(!types1[i].fullType.isImplicitlyCastableToUnknownType(types2[i].fullType)) {
             return false;
@@ -166,24 +169,25 @@ Attributes PostfixExpression(std::shared_ptr<Node> node) {
                     std::cerr << "Postfix error, LINE 150" << std::endl;
                     node->error();
                 } 
-                return postfix_atr;
-                /*Attributes atr_ret;
-                atr_ret.return_type = postfix_atr.return_type;
+                //return postfix_atr;
+                Attributes atr_ret;
+                atr_ret.fullType = postfix_atr.return_type;
                 atr_ret.l_expr = false;
-                return atr_ret; */
+                return atr_ret; 
             } else if(thirdChild->grammarSign == "<lista_argumenata>") {
                 Attributes postfix_atr = PostfixExpression(node->children[0]);
                 Attributes list_arguments = ListArguments(node->children[2]);
+                //std::cerr << postfix_atr.isFunction << " " << postfix_atr.parameters.empty() << " " << postfix_atr.return_type.type << std::endl;
                 if(!postfix_atr.isFunction || postfix_atr.parameters.empty() || postfix_atr.return_type.type == Type::NONE || 
                     !checkImplicitCasting(list_arguments.parameters, postfix_atr.parameters)) {
                         std::cerr << "Postfix error, LINE 162" << std::endl;
                     node->error();
                 }
-                return postfix_atr;
-                /*Attributes ret_atr;
+                //return postfix_atr;
+                Attributes ret_atr;
                 ret_atr.fullType = postfix_atr.return_type;
                 ret_atr.l_expr = false;
-                return ret_atr;*/
+                return ret_atr;
             }
         } else if(secondChild->grammarSign == "OP_INC" || secondChild->grammarSign == "OP_DEC") {
             Attributes postfix_atr = PostfixExpression(node->children[0]);
@@ -202,13 +206,17 @@ Attributes PostfixExpression(std::shared_ptr<Node> node) {
 Attributes ListArguments(std::shared_ptr<Node> node) {
     std::shared_ptr<Node> firstChild = node->children[0];
     if(firstChild->grammarSign == "<izraz_pridruzivanja>") {
-        return AssignmentExpression(firstChild);
+        Attributes atr =  AssignmentExpression(firstChild);
+        Parameter p;
+        p.fullType = atr.fullType;
+        atr.parameters.push_back(p);
+        return atr;
     } else if(firstChild->grammarSign == "<lista_argumenata>") {
         Attributes list_atr = ListArguments(node->children[0]);
         Attributes assign_atr = AssignmentExpression(node->children[2]);
-        for(Parameter param: assign_atr.parameters) {
-            list_atr.parameters.push_back(param);
-        }
+        Parameter p;
+        p.fullType = assign_atr.fullType;
+        list_atr.parameters.push_back(p);
         return list_atr;
     }
     throw std::logic_error("Error in ListArguments!");

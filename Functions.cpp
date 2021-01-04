@@ -365,7 +365,7 @@ void InitDeclarator(std::shared_ptr<Node> node, FullType inherited_type) {
   } else { // tocka 3. str 69
     if (!direct.seq && direct.isXType()) {
       // std::cerr << "tu" << std::endl;
-      std::cerr << initializer_atr.isFunction << std::endl;
+      //std::cerr << initializer_atr.isFunction << std::endl;
       if (initializer_atr.isFunction ||
           !initializer_atr.fullType.isImplicitlyCastableToUnknownType(direct))
         Error(node);
