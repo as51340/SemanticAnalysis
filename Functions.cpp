@@ -3,7 +3,6 @@
 #include <functional>
 #include <iostream>
 #include <unordered_map>
-#include <unordered_set>
 
 #include "Expressions.h"
 #include "Node.h"
@@ -14,8 +13,6 @@ extern std::shared_ptr<Node> root;
 
 bool inside_loop = false, inside_function = false;
 Attributes current_function_atr;
-
-std::unordered_set<std::string> function_declarations;
 
 // prints the node production
 void Error(std::shared_ptr<Node> node) {
@@ -33,8 +30,9 @@ void Error(std::shared_ptr<Node> node) {
 
 // Returns true if given parameters have the same types(basic types)
 bool EqualTypes(std::vector<Parameter> a, std::vector<Parameter> b) {
-  if (a.size() != b.size())
+  if (a.size() != b.size()) {
     return false;
+  }
   for (int i = 0; i < a.size(); i++)
     if (a[i].fullType != b[i].fullType)
       return false;
@@ -365,7 +363,7 @@ void InitDeclarator(std::shared_ptr<Node> node, FullType inherited_type) {
   } else { // tocka 3. str 69
     if (!direct.seq && direct.isXType()) {
       // std::cerr << "tu" << std::endl;
-      //std::cerr << initializer_atr.isFunction << std::endl;
+      // std::cerr << initializer_atr.isFunction << std::endl;
       if (initializer_atr.isFunction ||
           !initializer_atr.fullType.isImplicitlyCastableToUnknownType(direct))
         Error(node);
@@ -440,8 +438,7 @@ Attributes DirectDeclarator(std::shared_ptr<Node> node,
   }
 
   scope_node->local_scope[name] = atr;
-  if (atr.isFunction) function_declarations.insert(name);
-
+  if(atr.isFunction) node->declared_functions[name] = atr;
   return atr;
   // clang-format on
 }

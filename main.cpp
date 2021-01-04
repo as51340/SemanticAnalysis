@@ -70,36 +70,51 @@ void parseInput() {
     recursiveReading(tree->root, 0);
 }
 
+// clang-format on
 extern std::unordered_set<std::string> function_declarations;
+extern bool EqualTypes(std::vector<Parameter> a, std::vector<Parameter> b);
+
+std::ofstream ostream2("errors.out");
+void dfs(std::shared_ptr<Node> node) {
+
+  for (auto &pair : node->declared_functions) {
+    Attributes declared = pair.second;
+    Attributes defined_f = root->local_scope[pair.first];
+
+    if (!defined_f.defined || declared.return_type != defined_f.return_type ||
+        !EqualTypes(declared.parameters, defined_f.parameters)) {
+      ostream2 << "funkcija" << std::endl;
+      return;
+    }
+  }
+
+  for (auto child : node->children)
+    dfs(child);
+}
 
 int main(void) {
-    parseInput();
-    tree->printTree();
-    //std::cerr << "P A R S E D\n" << std::endl;
+  parseInput();
+  tree->printTree();
+  // std::cerr << "P A R S E D\n" << std::endl;
 
-    CompilationUnit(root);
+  CompilationUnit(root);
 
-    std::ofstream ostream("errors.out");
-    if(root->local_scope.count("main")){
-        auto& main_atr = root->local_scope["main"];
+  std::ofstream ostream("errors.out");
+  if (root->local_scope.count("main")) {
+    auto &main_atr = root->local_scope["main"];
 
-        if(main_atr.return_type.type != Type::INT ||
-           main_atr.return_type.const_expr == true ||
-           main_atr.return_type.seq == true || !main_atr.parameters.empty()){
-            ostream << "main" << std::endl; // bad main type
-            return 0;
-        }
-    }else {
-        ostream << "main" << std::endl; // main not declared
-        return 0;
+    if (main_atr.return_type.type != Type::INT ||
+        main_atr.return_type.const_expr == true ||
+        main_atr.return_type.seq == true || !main_atr.parameters.empty()) {
+      ostream << "main" << std::endl; // bad main type
+      return 0;
     }
-
-    for(std::string decl : function_declarations){
-        if(!root->local_scope[decl].defined){
-            ostream << "funkcija" << std::endl;
-            break;
-        }
-    }
-
+  } else {
+    ostream << "main" << std::endl; // main not declared
     return 0;
+  }
+
+  dfs(root);
+
+  return 0;
 }
