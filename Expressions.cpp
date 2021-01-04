@@ -72,6 +72,7 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
             std::cerr << complexCommand->local_scope[child->lexUnit].isFunction << std::endl;
             node->error(); //print error */
             Attributes atr = child->findScope(child->lexUnit);
+            //std::cerr << atr.isFunction << std::endl;
             return atr;
             //exception and we need to print error
         } catch(const std::invalid_argument&) {
@@ -164,11 +165,12 @@ Attributes PostfixExpression(std::shared_ptr<Node> node) {
                 if(!postfix_atr.isFunction || !postfix_atr.parameters.empty() || postfix_atr.return_type.type == Type::NONE) {
                     std::cerr << "Postfix error, LINE 150" << std::endl;
                     node->error();
-                }                
-                Attributes atr_ret;
+                } 
+                return postfix_atr;
+                /*Attributes atr_ret;
                 atr_ret.return_type = postfix_atr.return_type;
                 atr_ret.l_expr = false;
-                return atr_ret;
+                return atr_ret; */
             } else if(thirdChild->grammarSign == "<lista_argumenata>") {
                 Attributes postfix_atr = PostfixExpression(node->children[0]);
                 Attributes list_arguments = ListArguments(node->children[2]);
@@ -177,10 +179,11 @@ Attributes PostfixExpression(std::shared_ptr<Node> node) {
                         std::cerr << "Postfix error, LINE 162" << std::endl;
                     node->error();
                 }
-                Attributes ret_atr;
+                return postfix_atr;
+                /*Attributes ret_atr;
                 ret_atr.fullType = postfix_atr.return_type;
                 ret_atr.l_expr = false;
-                return ret_atr;
+                return ret_atr;*/
             }
         } else if(secondChild->grammarSign == "OP_INC" || secondChild->grammarSign == "OP_DEC") {
             Attributes postfix_atr = PostfixExpression(node->children[0]);
@@ -440,7 +443,9 @@ Attributes LogOrExpression(std::shared_ptr<Node> node) {
 Attributes AssignmentExpression(std::shared_ptr<Node> node) {
     std::shared_ptr<Node> firstChild = node->children[0];
     if(firstChild->grammarSign == "<log_ili_izraz>") {
-        return LogOrExpression(firstChild);
+        //return LogOrExpression(firstChild);
+        Attributes atr = LogOrExpression(firstChild);
+        return atr;
     } else if(firstChild->grammarSign == "<postfiks_izraz>") {
         Attributes post_atr = PostfixExpression(firstChild);
         if(post_atr.l_expr == false) {

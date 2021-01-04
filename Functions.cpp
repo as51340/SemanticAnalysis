@@ -139,7 +139,6 @@ Attributes TypeName(std::shared_ptr<Node> node) {
 std::vector<Parameter> ParameterList(std::shared_ptr<Node> node) {
   std::vector<Parameter> params, params_list;
   Parameter declared_param;
-
   for (auto &child : node->children) {
     std::string sign = child->grammarSign;
 
@@ -354,13 +353,16 @@ void InitDeclarator(std::shared_ptr<Node> node, FullType inherited_type) {
   }
 
   FullType direct = direct_atr.fullType;
-  std::cerr << "Init: " << initializer_atr.fullType.type << " direct: "  << direct.type << std::endl;
+  //std::cerr << "Init: " << initializer_atr.fullType.type << " direct: "  << direct.type << std::endl;
+  //std::cerr << initializer_atr.isFunction << std::endl;
   if (node->children.size() == 1) {
     if (direct.isConstTType())
       Error(node);
   } else { // tocka 3. str 69
-    if (!direct.seq && direct.isXType() && initializer_atr.isFunction) {
-      if (!initializer_atr.fullType.isImplicitlyCastableToUnknownType(direct) )
+    if (!direct.seq && direct.isXType()) {
+        //std::cerr << "tu" << std::endl;
+        //std::cerr << initializer_atr.isFunction << std::endl;
+      if (initializer_atr.isFunction || !initializer_atr.fullType.isImplicitlyCastableToUnknownType(direct) )
         Error(node);
     } else if (direct.isSeqXType() ) {
       if (initializer_atr.elem_num > direct_atr.elem_num )
@@ -444,16 +446,19 @@ Attributes Initializer(std::shared_ptr<Node> node) {
 
     if (sign == "<izraz_pridruzivanja>") {
       assignment_atr = AssignmentExpression(child);
+      //std::cerr << "U assignmentu: " << assignment_atr.isFunction << std::endl;
       if (assignment_atr.elem_num != -1) {
         atr.elem_num = assignment_atr.elem_num + 1;
         atr.parameters = std::vector<Parameter>(atr.elem_num, {Type::CHAR});
       } else {
         atr.fullType = assignment_atr.fullType;
       }
+      atr.isFunction = assignment_atr.isFunction;
     } else if (sign == "<lista_izraza_pridruzivanja>") {
       assignment_list_atr = AssignmentExpressionList(child);
       atr.elem_num = assignment_list_atr.elem_num;
       atr.parameters = assignment_list_atr.parameters;
+      atr.isFunction = assignment_list_atr.isFunction;
     }
   }
 
