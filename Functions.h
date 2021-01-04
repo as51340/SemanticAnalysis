@@ -1,4 +1,5 @@
 #include <memory>
+#include <fstream>
 
 #include "Node.h"
 #include "NodeExpression.h"

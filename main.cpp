@@ -42,10 +42,10 @@ std::string recursiveReading(std::shared_ptr<Node> root, short spaces) {
     std::string line;
     if(!std::getline(std::cin, line)) return "";
     while(true) {
-        if(isspace(line[spaces]) && !isspace(line[spaces+1]) && ((spaces > 0 && isspace(line[spaces-1])) || spaces == 0)) { // to mu je dijete
+        if(spaces < line.size() && isspace(line[spaces]) && !isspace(line[spaces+1]) && ((spaces > 0 && isspace(line[spaces-1])) || spaces == 0)) { // to mu je dijete
             std::shared_ptr<Node> newNode = std::make_shared<Node>(); //new object
             assign(line, newNode);
-            std::cout << newNode->grammarSign << std::endl;
+            //std::cout << newNode->grammarSign << std::endl;
             root->addChild(newNode);
             newNode->parent = root;
             std::string ret = recursiveReading(newNode, spaces+1);
@@ -72,7 +72,7 @@ void parseInput() {
 int main(void) {
     parseInput();
     tree->printTree();
-    std::cerr << "P A R S E D\n" << std::endl;
+    //std::cerr << "P A R S E D\n" << std::endl;
 
     CompilationUnit(root);
     return 0;

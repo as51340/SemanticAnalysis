@@ -15,14 +15,21 @@ Attributes current_function_atr;
 
 // prints the node production
 void Error(std::shared_ptr<Node> node) {
-  std::cout << node->grammarSign << " ::=";
+    std::ofstream ostream("errors.out");
+  //std::cout << this->grammarSign << " ::=";
+  ostream << node->grammarSign << " ::=";
   for (auto& child : node->children) {
-    std::cout << ' ' << child->grammarSign;
-    if (child->isTerminal())
-      std::cout << '(' << child->rowNumber << ',' << child->lexUnit << ')';
+    //std::cout << ' ' << child->grammarSign;
+    ostream << ' ' << child->grammarSign;
+    if (child->isTerminal()) {
+      //std::cout << '(' << child->rowNumber << ',' << child->lexUnit << ')';  
+      ostream << '(' << child->rowNumber << ',' << child->lexUnit << ')';  
+    }
+      
   }
-  std::cout << std::endl;
-  exit(-1);
+  //std::cout << std::endl;
+  ostream << std::endl;
+  exit(-1);  // we need to finish program
 }
 
 // Returns true if given parameters have the same types(basic types)

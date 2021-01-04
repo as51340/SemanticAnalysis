@@ -61,20 +61,23 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
             //exception and we need to print error
         } catch(const std::invalid_argument&) {
             node->error(); //print error
+            std::cerr << "Cannot find variable in scope!" << std::endl;
         }
     } else if(child->grammarSign == "BROJ") {
         try {
             long long num = stoi(child->lexUnit); //we assume it fits into long long
             if(num < -2147483648 || num > 2147483647) { //value is not int
                 node->error();
+                std::cerr << "Cannot convert to int" << std::endl;
             } else {
                 Attributes atr(FullType(Type::INT), false);
                 if(atr.fullType.type == Type::INT)  //i think this should be okay but for testing
-                    std::cout << "YES\n";
+                    //std::cout << "YES\n";
                 return atr;
             }
         } catch(const std::exception&) {
             node->error(); //cannot be converted to int
+            std::cerr << "Cannot convert to int" << std::endl;
         }
     } else if(child->grammarSign == "ZNAK") {
         try {
@@ -82,6 +85,7 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
             return Attributes(FullType(Type::CHAR), false);
         } catch(const std::exception&) {
             node->error();
+            std::cerr << "Char is not correct" << std::endl;
         }
         
     } else if(child->grammarSign == "NIZ_ZNAKOVA") {
@@ -95,6 +99,7 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
             return atr;
         } catch(const std::exception&) {
             node->error();
+            std::cerr << "Char sequence is not correct" << std::endl;
         }
         
     } else if(child->grammarSign == "L_ZAGRADA") {
@@ -124,10 +129,12 @@ Attributes PostfixExpression(std::shared_ptr<Node> node) {
         if(secondChild->grammarSign == "L_UGL_ZAGRADA") {
             Attributes postfix_atr = PostfixExpression(node->children[0]);
             if(!postfix_atr.fullType.isSeqXType()) {
+                std::cerr << "Postfix error, line 132" << std::endl;
                 node->error();
             }
             Attributes expression_atr = Expression(node->children[2]);
             if(!expression_atr.fullType.isImplicitlyCastableToInt()) {
+                std::cerr << "Postfix error, LINE 137" << std::endl;
                 node->error();
             }
             FullType fullType;
@@ -140,6 +147,7 @@ Attributes PostfixExpression(std::shared_ptr<Node> node) {
             if(thirdChild->grammarSign == "D_ZAGRADA") {
                 Attributes postfix_atr = PostfixExpression(node->children[0]);
                 if(!postfix_atr.isFunction || !postfix_atr.parameters.empty() || postfix_atr.return_type.type == Type::NONE) {
+                    std::cerr << "Postfix error, LINE 150" << std::endl;
                     node->error();
                 }                
                 Attributes atr_ret;
@@ -151,6 +159,7 @@ Attributes PostfixExpression(std::shared_ptr<Node> node) {
                 Attributes list_arguments = ListArguments(node->children[2]);
                 if(!postfix_atr.isFunction || postfix_atr.parameters.empty() || postfix_atr.return_type.type == Type::NONE || 
                     !checkImplicitCasting(list_arguments.parameters, postfix_atr.parameters)) {
+                        std::cerr << "Postfix error, LINE 162" << std::endl;
                     node->error();
                 }
                 Attributes ret_atr;
@@ -161,6 +170,7 @@ Attributes PostfixExpression(std::shared_ptr<Node> node) {
         } else if(secondChild->grammarSign == "OP_INC" || secondChild->grammarSign == "OP_DEC") {
             Attributes postfix_atr = PostfixExpression(node->children[0]);
             if(postfix_atr.l_expr == false || !postfix_atr.fullType.isImplicitlyCastableToInt()) {
+                std::cerr << "Postfix error, LINE 173" << std::endl;
                 node->error();
             } else {
                 return Attributes(FullType(Type::INT), false);
@@ -193,12 +203,14 @@ Attributes UnaryExpression(std::shared_ptr<Node> node) {
     } else if(firstChild->grammarSign == "OP_INC" || firstChild->grammarSign == "OP_DEC") {
         Attributes unary_expr = UnaryExpression(node->children[1]);
         if(unary_expr.l_expr == false || !unary_expr.fullType.isImplicitlyCastableToInt()) {
+            std::cerr << "Unarx error, LINE 206" << std::endl;
             node->error();
         }
         return Attributes(FullType(Type::INT), 0);
     } else if(firstChild->grammarSign == "<unarni_operator>") {
         Attributes cast_atr = CastExpression(node->children[1]);
         if(!cast_atr.fullType.isImplicitlyCastableToInt()) {
+            std::cerr << "Unary error, LINE 213" << std::endl;
             node->error();
         }
         return Attributes(FullType(Type::INT), 0);
@@ -215,6 +227,7 @@ Attributes CastExpression(std::shared_ptr<Node> node) {
         Attributes nameType_expr = TypeName(node->children[1]);
         Attributes castExpr_atr = CastExpression(node->children[3]);
         if(!castExpr_atr.fullType.isExplicitlyCastable(nameType_expr.fullType)) {
+            std::cerr << "Cast error, LINE 230" << std::endl;
             node->error();
         }
         return Attributes(nameType_expr.fullType, false);
@@ -230,10 +243,12 @@ Attributes MultiplicativeExpression(std::shared_ptr<Node> node) {
     } else if(firstChild->grammarSign == "<multiplikativni_izraz>") {
         Attributes mul_expr = MultiplicativeExpression(firstChild);
         if(!mul_expr.fullType.isImplicitlyCastableToInt()) {
+            std::cerr << "Multiplicative error, LINE 246" << std::endl;
             node->error();
         }
         Attributes cast_atr = CastExpression(node->children[2]);
         if(!cast_atr.fullType.isImplicitlyCastableToInt()) {
+            std::cerr << "Multiplicative error, LINE 251" << std::endl;
             node->error();
         }
         return Attributes(FullType(Type::INT), 0);
@@ -249,10 +264,12 @@ Attributes AditiveExpression(std::shared_ptr<Node> node) {
     } else if(firstChild->grammarSign == "<aditivni_izraz>") {
         Attributes adi_atr = AditiveExpression(firstChild);
         if(!adi_atr.fullType.isImplicitlyCastableToInt()) {
+            std::cerr << "Aditive error, LINE 267" << std::endl;
             node->error();
         }
         Attributes mul_atr = MultiplicativeExpression(node->children[2]);
         if(!mul_atr.fullType.isImplicitlyCastableToInt()) {
+            std::cerr << "Aditive error, LINE 272" << std::endl;
             node->error();
         }
         return Attributes(FullType(Type::INT), 0);
@@ -268,10 +285,11 @@ Attributes RelationalExpression(std::shared_ptr<Node> node) {
         Attributes rel_atr = RelationalExpression(firstChild);
         if(!rel_atr.fullType.isImplicitlyCastableToInt()) {
             node->error();
-            exit(-1);
+            std::cerr << "Relational error, LINE 288" << std::endl;
         }
         Attributes adi_atr = AditiveExpression(node->children[2]);
         if(!adi_atr.fullType.isImplicitlyCastableToInt()) {
+            std::cerr << "Relational error, LINE 292" << std::endl;
             node->error();
         }
         return Attributes(FullType(Type::INT), 0);
@@ -287,9 +305,11 @@ Attributes EqualityExpression(std::shared_ptr<Node> node) {
         Attributes equ_atr = EqualityExpression(firstChild);
         if(!equ_atr.fullType.isImplicitlyCastableToInt()) {
             node->error();
+            std::cerr << "Equality error, LINE 308" << std::endl;
         }
         Attributes rel_atr = RelationalExpression(node->children[2]);
         if(!rel_atr.fullType.isImplicitlyCastableToInt()) {
+            std::cerr << "Equality error, LINE 312" << std::endl;
             node->error();
         }
         return Attributes(FullType(Type::INT), 0);
@@ -304,10 +324,12 @@ Attributes BitAndExpression(std::shared_ptr<Node> node) {
     } else if(firstChild->grammarSign == "<bin_i_izraz>") {
         Attributes bit_atr = BitAndExpression(firstChild);
         if(!bit_atr.fullType.isImplicitlyCastableToInt()) {
+            std::cerr << "BitAnd error, LINE 327" << std::endl;
             node->error();
         }
         Attributes equ_atr = EqualityExpression(node->children[2]);
         if(!equ_atr.fullType.isImplicitlyCastableToInt()) {
+            std::cerr << "BitAnd error, LINE 332" << std::endl;
             node->error();
         }
         return Attributes(FullType(Type::INT), 0);
@@ -323,10 +345,12 @@ Attributes BitXorExpression(std::shared_ptr<Node> node) {
     } else if(firstChild->grammarSign == "<bin_xili_izraz>") {
         Attributes xili_atr = BitXorExpression(firstChild);
         if(!xili_atr.fullType.isImplicitlyCastableToInt()) {
+            std::cerr << "BitXor error, LINE 348" << std::endl;
             node->error();
         }
         Attributes bit_and_atr = BitAndExpression(node->children[2]);
         if(!bit_and_atr.fullType.isImplicitlyCastableToInt()) {
+            std::cerr << "BitXor error, LINE 353" << std::endl;
             node->error();
         }
         return Attributes(FullType(Type::INT), 0);
@@ -342,10 +366,12 @@ Attributes BitOrExpression(std::shared_ptr<Node> node) {
     } else if(firstChild->grammarSign == "<bin_ili_izraz>") {
         Attributes ili_atr = BitOrExpression(firstChild);
         if(!ili_atr.fullType.isImplicitlyCastableToInt()) {
+            std::cerr << "BitOr error, LINE 369" << std::endl;
             node->error();
         }
         Attributes bit_xor_atr = BitXorExpression(node->children[2]);
         if(!bit_xor_atr.fullType.isImplicitlyCastableToInt()) {
+            std::cerr << "BitOr error, LINE 374" << std::endl;
             node->error();
         }
         return Attributes(FullType(Type::INT), 0);
@@ -361,10 +387,12 @@ Attributes LogAndExpression(std::shared_ptr<Node> node) {
     } else if(firstChild->grammarSign == "<log_i_izraz>") {
         Attributes log_i_atr = LogAndExpression(firstChild);
         if(!log_i_atr.fullType.isImplicitlyCastableToInt()) {
+            std::cerr << "LogAnd error, LINE 390" << std::endl;
             node->error();
         }
         Attributes bit_or_atr = BitOrExpression(node->children[2]);
         if(!bit_or_atr.fullType.isImplicitlyCastableToInt()) {
+            std::cerr << "LogAnd error, LINE 395" << std::endl;
             node->error();
         }
         return Attributes(FullType(Type::INT), 0);
@@ -380,10 +408,12 @@ Attributes LogOrExpression(std::shared_ptr<Node> node) {
     } else if(firstChild->grammarSign == "<log_ili_izraz>") {
         Attributes log_ili_atr = LogOrExpression(firstChild);
         if(!log_ili_atr.fullType.isImplicitlyCastableToInt()) {
+            std::cerr << "LogOr error, LINE 411" << std::endl;
             node->error();
         }
         Attributes log_i_atr = LogAndExpression(node->children[2]);
         if(!log_i_atr.fullType.isImplicitlyCastableToInt()) {
+            std::cerr << "LogOr error, LINE 416" << std::endl;
             node->error();
         }
         return Attributes(FullType(Type::INT), 0);
@@ -398,10 +428,12 @@ Attributes AssignmentExpression(std::shared_ptr<Node> node) {
     } else if(firstChild->grammarSign == "<postfiks_izraz>") {
         Attributes post_atr = PostfixExpression(firstChild);
         if(post_atr.l_expr == false) {
+            std::cerr << "Assignment error, LINE 431" << std::endl;
             node->error();
         }
         Attributes assign_atr = AssignmentExpression(node->children[2]);
         if(!assign_atr.fullType.isImplicitlyCastableToUnknownType(post_atr.fullType)) {
+            std::cerr << "Assignment error, LINE 436" << std::endl;
             node->error();
         }
         return Attributes(post_atr.fullType, 0);

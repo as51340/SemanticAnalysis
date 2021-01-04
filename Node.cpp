@@ -39,12 +39,19 @@ Attributes Node::findScope(std::string var) {
 
 // prints the node production
 void Node::error() {
-  std::cout << this->grammarSign << " ::=";
+  std::ofstream ostream("errors.out");
+  //std::cout << this->grammarSign << " ::=";
+  ostream << this->grammarSign << " ::=";
   for (auto& child : this->children) {
-    std::cout << ' ' << child->grammarSign;
-    if (child->isTerminal())
-      std::cout << '(' << child->rowNumber << ',' << child->lexUnit << ')';
+    //std::cout << ' ' << child->grammarSign;
+    ostream << ' ' << child->grammarSign;
+    if (child->isTerminal()) {
+      //std::cout << '(' << child->rowNumber << ',' << child->lexUnit << ')';  
+      ostream << '(' << child->rowNumber << ',' << child->lexUnit << ')';  
+    }
+      
   }
-  std::cout << std::endl;
+  //std::cout << std::endl;
+  ostream << std::endl;
   exit(-1);  // we need to finish program
 }
