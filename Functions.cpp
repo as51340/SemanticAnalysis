@@ -5,38 +5,41 @@
 #include <unordered_map>
 
 #include "Expressions.h"
+#include "Node.h"
 #include "NodeExpression.h"
 
 extern std::shared_ptr<Node> root;
 // auto& global_scope = root->local_scope; //iz nekog razloga ne radi
 
-bool inside_loop, inside_function;
+bool inside_loop = false, inside_function = false;
 Attributes current_function_atr;
 
 // prints the node production
 void Error(std::shared_ptr<Node> node) {
   std::ofstream ostream("errors.out");
   ostream << node->grammarSign << " ::=";
-  for (auto& child : node->children) {
+  for (auto &child : node->children) {
     ostream << ' ' << child->grammarSign;
     if (child->isTerminal()) {
       ostream << '(' << child->rowNumber << ',' << child->lexUnit << ')';
     }
   }
   ostream << std::endl;
-  exit(-1);  // we need to finish program
+  exit(-1); // we need to finish program
 }
 
 // Returns true if given parameters have the same types(basic types)
 bool EqualTypes(std::vector<Parameter> a, std::vector<Parameter> b) {
-  if (a.size() != b.size()) return false;
+  if (a.size() != b.size())
+    return false;
   for (int i = 0; i < a.size(); i++)
-    if (a[i].fullType != b[i].fullType) return false;
+    if (a[i].fullType != b[i].fullType)
+      return false;
   return true;
 }
 
 void CompilationUnit(std::shared_ptr<Node> node) {
-  for (auto& child : node->children) {
+  for (auto &child : node->children) {
     std::string sign = child->grammarSign;
 
     if (sign == "prijevodna_jedinica>")
@@ -47,7 +50,7 @@ void CompilationUnit(std::shared_ptr<Node> node) {
 }
 
 void OuterDeclaration(std::shared_ptr<Node> node) {
-  auto& child = node->children[0];  // unary production
+  auto &child = node->children[0]; // unary production
   std::string sign = child->grammarSign;
 
   if (sign == "<definicija_funkcije>")
@@ -61,12 +64,13 @@ void FunctionDefinition(std::shared_ptr<Node> node) {
   Attributes return_atr;
   std::vector<Parameter> parameters;
   std::string function_name;
+  // auto &local_scope = node->getClosestScope()->local_scope;
 
   bool old = inside_function;
   inside_function = true;
   Attributes old_atr = current_function_atr;
 
-  for (auto& child : node->children) {
+  for (auto &child : node->children) {
     std::string sign = child->grammarSign;
     // clang-format off
     if (sign == "<ime_tipa>") {
@@ -118,14 +122,15 @@ Attributes TypeName(std::shared_ptr<Node> node) {
   Attributes atr;
   Type specifier = Type::NONE;
 
-  for (auto& child : node->children) {
+  for (auto &child : node->children) {
     std::string sign = child->grammarSign;
     if (sign == "KR_CONST")
       atr.fullType.const_expr = true;
     else if (sign == "<specifikator_tipa>")
       specifier = TypeSpecifier(child);
   }
-  if (atr.fullType.const_expr && specifier == Type::VOID) Error(node);
+  if (atr.fullType.const_expr && specifier == Type::VOID)
+    Error(node);
 
   atr.fullType.type = specifier;
   return atr;
@@ -135,7 +140,7 @@ std::vector<Parameter> ParameterList(std::shared_ptr<Node> node) {
   std::vector<Parameter> params, params_list;
   Parameter declared_param;
 
-  for (auto& child : node->children) {
+  for (auto &child : node->children) {
     std::string sign = child->grammarSign;
 
     if (sign == "<lista_parametara>") {
@@ -148,8 +153,9 @@ std::vector<Parameter> ParameterList(std::shared_ptr<Node> node) {
   }
 
   // check if names are unique
-  for (auto& param : params_list)
-    if (param.name == declared_param.name) Error(node);
+  for (auto &param : params_list)
+    if (param.name == declared_param.name)
+      Error(node);
 
   return params;
 }
@@ -158,30 +164,32 @@ Parameter ParameterDeclaration(std::shared_ptr<Node> node) {
   Parameter param;
   Attributes type_name_atr;
 
-  for (auto& child : node->children) {
+  for (auto &child : node->children) {
     std::string sign = child->grammarSign;
 
     if (sign == "<ime_tipa>") {
       type_name_atr = TypeName(child);
-      if (type_name_atr.fullType.type == Type::VOID) Error(child);
+      if (type_name_atr.fullType.type == Type::VOID)
+        Error(child);
     } else if (sign == "IDN") {
       param.name = child->lexUnit;
     }
   }
 
   param.fullType = type_name_atr.fullType;
-  if (node->children.size() > 2) param.fullType.seq = true;
+  if (node->children.size() > 2)
+    param.fullType.seq = true;
   return param;
 }
 
 void ComplexCommand(std::shared_ptr<Node> node,
                     std::vector<Parameter> parameters = {}) {
   for (auto parameter : parameters) {
-    auto& [full_type, name] = parameter;
+    auto &[full_type, name] = parameter;
     node->local_scope[name].fullType.type = full_type.type;
   }
 
-  for (auto& child : node->children) {
+  for (auto &child : node->children) {
     std::string sign = child->grammarSign;
 
     if (sign == "<lista_naredbi>")
@@ -194,14 +202,17 @@ void ComplexCommand(std::shared_ptr<Node> node,
 Type TypeSpecifier(std::shared_ptr<Node> node) {
   std::string sign = node->children[0]->grammarSign;
 
-  if (sign == "KR_VOID") return Type::VOID;
-  if (sign == "KR_CHAR") return Type::CHAR;
-  if (sign == "KR_INT") return Type::INT;
+  if (sign == "KR_VOID")
+    return Type::VOID;
+  if (sign == "KR_CHAR")
+    return Type::CHAR;
+  if (sign == "KR_INT")
+    return Type::INT;
   return Type::NONE;
 }
 
 void CommandList(std::shared_ptr<Node> node) {
-  for (auto& child : node->children) {
+  for (auto &child : node->children) {
     std::string sign = child->grammarSign;
 
     if (sign == "<naredba>")
@@ -221,23 +232,25 @@ FullType Command(std::shared_ptr<Node> node) {
   else if(sign == "<naredba_petlje>")  LoopCommand(child);
   else if(sign == "<naredba_skoka>")  JumpCommand(child);
   // clang-format on
-  return {Type::NONE};  // ???
+  return {Type::NONE}; // ???
 }
 
 FullType ExpressionCommand(std::shared_ptr<Node> node) {
   auto child = node->children[0];
 
-  if (child->grammarSign == "<izraz>") return Command(child);
-  return {Type::INT};  // does this work?
+  if (child->grammarSign == "<izraz>")
+    return Command(child);
+  return {Type::INT}; // does this work?
 }
 
 void BranchingCommand(std::shared_ptr<Node> node) {
-  for (auto& child : node->children) {
+  for (auto &child : node->children) {
     std::string sign = child->grammarSign;
 
     if (sign == "<izraz>") {
       Attributes expr_atr = Expression(child);
-      if (!expr_atr.fullType.isImplicitlyCastableToInt()) Error(node);
+      if (!expr_atr.fullType.isImplicitlyCastableToInt())
+        Error(node);
     } else if (sign == "<naredba>")
       Command(child);
   }
@@ -245,7 +258,7 @@ void BranchingCommand(std::shared_ptr<Node> node) {
 
 void LoopCommand(std::shared_ptr<Node> node) {
   int expr_command_cnt = 0;
-  for (auto& child : node->children) {
+  for (auto &child : node->children) {
     std::string sign = child->grammarSign;
 
     if (sign == "<izraz>") {
@@ -261,7 +274,7 @@ void LoopCommand(std::shared_ptr<Node> node) {
     } else if (sign == "<izraz_naredba>") {
       expr_command_cnt++;
       Attributes expr_command_atr = ExpressionCommand(child);
-      if (expr_command_cnt > 1 &&  // == 2
+      if (expr_command_cnt > 1 && // == 2
           !expr_command_atr.fullType.isImplicitlyCastableToInt())
         Error(node);
     }
@@ -269,7 +282,7 @@ void LoopCommand(std::shared_ptr<Node> node) {
 }
 
 void JumpCommand(std::shared_ptr<Node> node) {
-  for (auto& child : node->children) {
+  for (auto &child : node->children) {
     std::string sign = child->grammarSign;
 
     if ((sign == "KR_CONTINUE" || sign == "KR_BREAK") && !inside_loop)
@@ -290,7 +303,7 @@ void JumpCommand(std::shared_ptr<Node> node) {
 }
 
 void DeclarationList(std::shared_ptr<Node> node) {
-  for (auto& child : node->children) {
+  for (auto &child : node->children) {
     std::string sign = child->grammarSign;
 
     if (sign == "<deklaracija>")
@@ -302,13 +315,13 @@ void DeclarationList(std::shared_ptr<Node> node) {
 
 void Declaration(std::shared_ptr<Node> node) {
   Attributes type_name_atr;
-  for (auto& child : node->children) {
+  for (auto &child : node->children) {
     std::string sign = child->grammarSign;
 
     if (sign == "<ime_tipa>")
       type_name_atr = TypeName(child);
     else if (sign == "<lista_init_deklaratora>") {
-      if (type_name_atr.isFunction)  // vjv ne treba
+      if (type_name_atr.isFunction) // vjv ne treba
         InitDeclaratorList(child, type_name_atr.return_type);
       else
         InitDeclaratorList(child, type_name_atr.fullType);
@@ -317,7 +330,7 @@ void Declaration(std::shared_ptr<Node> node) {
 }
 
 void InitDeclaratorList(std::shared_ptr<Node> node, FullType inherited_type) {
-  for (auto& child : node->children) {
+  for (auto &child : node->children) {
     std::string sign = child->grammarSign;
 
     if (sign == "<init_deklarator>")
@@ -331,7 +344,7 @@ void InitDeclaratorList(std::shared_ptr<Node> node, FullType inherited_type) {
 // TODO: uljepsat uvjete
 void InitDeclarator(std::shared_ptr<Node> node, FullType inherited_type) {
   Attributes initializer_atr, direct_atr;
-  for (auto& child : node->children) {
+  for (auto &child : node->children) {
     std::string sign = child->grammarSign;
 
     if (sign == "<izravni_deklarator>")
@@ -343,14 +356,17 @@ void InitDeclarator(std::shared_ptr<Node> node, FullType inherited_type) {
   FullType direct = direct_atr.fullType;
   if (node->children.size() == 1 && direct.isConstTType()) {
     Error(node);
-  } else {  // tocka 3. str 69
+  } else { // tocka 3. str 69
     if (!direct.seq && direct.isXType()) {
-      if (!initializer_atr.fullType.isImplicitlyCastableToT()) Error(node);
+      if (!initializer_atr.fullType.isImplicitlyCastableToT())
+        Error(node);
     } else if (direct.isSeqXType()) {
-      if (initializer_atr.elem_num > direct_atr.elem_num) Error(node);
-      for (auto& param : initializer_atr.parameters) {
-        auto& [type, name] = param;
-        if (!type.isImplicitlyCastableToT()) Error(node);
+      if (initializer_atr.elem_num > direct_atr.elem_num)
+        Error(node);
+      for (auto &param : initializer_atr.parameters) {
+        auto &[type, name] = param;
+        if (!type.isImplicitlyCastableToT())
+          Error(node);
       }
     } else {
       Error(node);
@@ -364,30 +380,29 @@ Attributes DirectDeclarator(std::shared_ptr<Node> node,
   Attributes atr;
   std::vector<Parameter> parameters;
   std::string name;
+  auto scope_node = node->getClosestScope();
 
-  for (auto& child : node->children) {
+  for (auto &child : node->children) {
     std::string sign = child->grammarSign;
     // clang-format off
     if (sign == "IDN") {
       name = child->lexUnit;
-      if (inherited_type.type == Type::VOID || node->local_scope.count(name)) Error(node);
+      if (inherited_type.type == Type::VOID || scope_node->local_scope.count(name)) Error(node);
       atr.fullType = inherited_type;
     }
     else if(sign == "BROJ"){
       int val = std::stoi(child->lexUnit);
-      if (inherited_type.type == Type::VOID || node->local_scope.count(name)) Error(node);
+      if (inherited_type.type == Type::VOID || scope_node->local_scope.count(name)) Error(node);
       if(val < 0 || val > 1024) Error(child);
       atr.fullType = inherited_type;
       atr.fullType.seq = true;
       atr.elem_num = val;
     }
     else if (sign == "KR_VOID"){
-      auto& local_scope = node->local_scope;
-
-      if (local_scope.count(name)) { //if declared
-        if (!(local_scope[name].isFunction &&
-              local_scope[name].return_type == inherited_type &&
-              local_scope[name].parameters.empty()))
+      if (scope_node->local_scope.count(name)) { //if declared
+        if (!(scope_node->local_scope[name].isFunction &&
+              scope_node->local_scope[name].return_type == inherited_type &&
+              scope_node->local_scope[name].parameters.empty()))
           Error(node); // if already declared with different Attributes
       } else {  // declare
         atr.isFunction = true;
@@ -397,11 +412,10 @@ Attributes DirectDeclarator(std::shared_ptr<Node> node,
     else if (sign == "<lista_parametara>") {
       parameters = ParameterList(child);
 
-      auto& local_scope = node->local_scope;
-      if (local_scope.count(name)) { //if declared
-        if (!(local_scope[name].isFunction &&
-              local_scope[name].return_type == inherited_type &&
-              EqualTypes(local_scope[name].parameters, parameters)))
+      if (scope_node->local_scope.count(name)) { //if declared
+        if (!(scope_node->local_scope[name].isFunction &&
+              scope_node->local_scope[name].return_type == inherited_type &&
+              EqualTypes(scope_node->local_scope[name].parameters, parameters)))
           Error(node); // if already declared with different Attributes
       } else {  // declare
         atr.isFunction = true;
@@ -412,13 +426,13 @@ Attributes DirectDeclarator(std::shared_ptr<Node> node,
     // clang-format on
   }
 
-  node->local_scope[name] = atr;
+  scope_node->local_scope[name] = atr;
   return atr;
 }
 
 Attributes Initializer(std::shared_ptr<Node> node) {
   Attributes atr, assignment_atr, assignment_list_atr;
-  for (auto& child : node->children) {
+  for (auto &child : node->children) {
     std::string sign = child->grammarSign;
 
     if (sign == "<izraz_pridruzivanja>") {
@@ -442,7 +456,7 @@ Attributes Initializer(std::shared_ptr<Node> node) {
 Attributes AssignmentExpressionList(std::shared_ptr<Node> node) {
   Attributes atr, assignment_atr, assignment_list_atr;
 
-  for (auto& child : node->children) {
+  for (auto &child : node->children) {
     std::string sign = child->grammarSign;
 
     if (sign == "<lista_izraza_pridruzivanja>")
