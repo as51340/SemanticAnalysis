@@ -237,9 +237,8 @@ FullType Command(std::shared_ptr<Node> node) {
 
 FullType ExpressionCommand(std::shared_ptr<Node> node) {
   auto child = node->children[0];
-
   if (child->grammarSign == "<izraz>")
-    return Command(child);
+    return Expression(child).fullType;
   return {Type::INT}; // does this work?
 }
 
