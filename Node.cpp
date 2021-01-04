@@ -58,7 +58,7 @@ void Node::error() {
 }
 
 
-std::shared_ptr<Node> getClosestScope() {
+std::shared_ptr<Node> Node::getClosestScope() {
     std::shared_ptr<Node> currNode = std::make_shared<Node>(*this);
     while(true) {
         if(currNode == nullptr) {
@@ -70,5 +70,5 @@ std::shared_ptr<Node> getClosestScope() {
         if(currNode->parent == nullptr)  break;
         currNode = currNode->parent;
     }
-    throw std::invalid_argument("Nothing was found in scope!");
+    return currNode; //this should be root
 }
