@@ -57,6 +57,9 @@ bool FullType::isImplicitlyCastableToT(){
 
 
 bool FullType::isImplicitlyCastableToUnknownType(FullType fullType) {
+    if(fullType.type == Type::VOID) {
+        return false;
+    }
     if(type == fullType.type) {
         return true;
     }

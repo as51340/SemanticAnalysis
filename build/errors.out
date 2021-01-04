@@ -1,1 +1,1 @@
-<cast_izraz> ::= L_ZAGRADA(4,() <ime_tipa> D_ZAGRADA(4,)) <cast_izraz>
+<init_deklarator> ::= <izravni_deklarator> OP_PRIDRUZI(3,=) <inicijalizator>
