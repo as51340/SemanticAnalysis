@@ -63,10 +63,14 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
         try {
             std::cerr << "LexUnit: " << child->lexUnit << " " << child->local_scope.size() << std::endl;
             std::shared_ptr<Node> complexCommand = child->getClosestScope();
-            return complexCommand->local_scope[child->lexUnit];
+            if(complexCommand->local_scope.count(child->lexUnit) > 0 ){
+                return complexCommand->local_scope[child->lexUnit];
+            }
+            std::cerr << "Cannot find variable in scope!" << std::endl;
+            node->error(); //print error
             //exception and we need to print error
         } catch(const std::logic_error&) {
-            std::cerr << "Cannot find variable in scope!" << std::endl;
+            std::cerr << "Logic error in scope!" << std::endl;
             node->error(); //print error
         }
     } else if(child->grammarSign == "BROJ") {
