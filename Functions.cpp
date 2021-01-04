@@ -389,6 +389,7 @@ Attributes DirectDeclarator(std::shared_ptr<Node> node,
       name = child->lexUnit;
       if (inherited_type.type == Type::VOID || scope_node->local_scope.count(name)) Error(node);
       atr.fullType = inherited_type;
+      atr.l_expr = !inherited_type.const_expr;
     }
     else if(sign == "BROJ"){
       int val = std::stoi(child->lexUnit);
@@ -397,6 +398,7 @@ Attributes DirectDeclarator(std::shared_ptr<Node> node,
       atr.fullType = inherited_type;
       atr.fullType.seq = true;
       atr.elem_num = val;
+      atr.l_expr = false;
     }
     else if (sign == "KR_VOID"){
       if (scope_node->local_scope.count(name)) { //if declared
@@ -407,6 +409,7 @@ Attributes DirectDeclarator(std::shared_ptr<Node> node,
       } else {  // declare
         atr.isFunction = true;
         atr.return_type = inherited_type;
+        atr.l_expr = false;
       }
     }
     else if (sign == "<lista_parametara>") {
@@ -421,6 +424,7 @@ Attributes DirectDeclarator(std::shared_ptr<Node> node,
         atr.isFunction = true;
         atr.return_type = inherited_type;
         atr.parameters = parameters;
+        atr.l_expr = false;
       }
     }
     // clang-format on
