@@ -354,12 +354,11 @@ void InitDeclarator(std::shared_ptr<Node> node, FullType inherited_type) {
   }
 
   FullType direct = direct_atr.fullType;
-  if (node->children.size() == 1 && direct.isConstTType()) {
-    Error(node);
+  if (node->children.size() == 1) {
+    if (direct.isConstTType())
+      Error(node);
   } else { // tocka 3. str 69
     if (!direct.seq && direct.isXType()) {
-        //std::cerr << initializer_atr.fullType.type << std::endl;
-        //std::cerr << direct.type << std::endl;
       if (!initializer_atr.fullType.isImplicitlyCastableToUnknownType(direct))
         Error(node);
     } else if (direct.isSeqXType()) {
