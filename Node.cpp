@@ -26,7 +26,7 @@ void Node::printNode(std::ostream& ofStream) {
 Attributes Node::findScope(std::string var) {
   std::shared_ptr<Node> currNode = std::make_shared<Node>(*this);
   while (true) {
-      std::cerr << currNode->grammarSign << std::endl;
+      //std::cerr << currNode->grammarSign << std::endl;
     if (currNode->local_scope.count(var) > 0) {
       return currNode->local_scope[var];
     }
@@ -55,4 +55,20 @@ void Node::error() {
   //std::cout << std::endl;
   ostream << std::endl;
   exit(-1);  // we need to finish program
+}
+
+
+std::shared_ptr<Node> getClosestScope() {
+    std::shared_ptr<Node> currNode = std::make_shared<Node>(*this);
+    while(true) {
+        if(currNode == nullptr) {
+            throw std::logic_error("Current node is nullpointer, getClosestScope error!");
+        }
+        if(currNode->grammarSign == "<slozena_naredba>") {
+            return currNode;
+        }
+        if(currNode->parent == nullptr)  break;
+        currNode = currNode->parent;
+    }
+    throw std::invalid_argument("Nothing was found in scope!");
 }

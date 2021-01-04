@@ -1,1 +1,1 @@
-<init_deklarator> ::= <izravni_deklarator> OP_PRIDRUZI(2,=) <inicijalizator>
+<primarni_izraz> ::= IDN(3,c)

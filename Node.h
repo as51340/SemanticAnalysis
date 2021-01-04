@@ -21,6 +21,8 @@ class Node {
   std::unordered_map<std::string, Attributes> local_scope;
   
   Attributes findScope(std::string);
+  
+  std::shared_ptr<Node> getClosestScope();
 
   Node();
   Node(std::string, std::string, long);

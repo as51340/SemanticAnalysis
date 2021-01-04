@@ -61,6 +61,7 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
     std::shared_ptr<Node> child = node->children[0];
     if(child->grammarSign == "IDN") {
         try {
+            std::cerr << "LexUnit: " << child->lexUnit << " " << child->local_scope.size() << std::endl;
             return child->findScope(child->lexUnit); //if this command executes succesfully, variable exists in some scope, else we threw 
             //exception and we need to print error
         } catch(const std::invalid_argument&) {
