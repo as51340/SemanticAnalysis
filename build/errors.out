@@ -1,1 +1,1 @@
-<primarni_izraz> ::= IDN(3,c)
+<init_deklarator> ::= <izravni_deklarator>

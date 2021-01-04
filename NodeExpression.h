@@ -2,6 +2,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <iostream>
 
 enum Type { NONE = 0, VOID, INT, CHAR };
 

@@ -358,7 +358,9 @@ void InitDeclarator(std::shared_ptr<Node> node, FullType inherited_type) {
     Error(node);
   } else { // tocka 3. str 69
     if (!direct.seq && direct.isXType()) {
-      if (!initializer_atr.fullType.isImplicitlyCastableToT())
+        //std::cerr << initializer_atr.fullType.type << std::endl;
+        //std::cerr << direct.type << std::endl;
+      if (!initializer_atr.fullType.isImplicitlyCastableToUnknownType(direct))
         Error(node);
     } else if (direct.isSeqXType()) {
       if (initializer_atr.elem_num > direct_atr.elem_num)

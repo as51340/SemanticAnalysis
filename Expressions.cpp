@@ -61,7 +61,7 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
     std::shared_ptr<Node> child = node->children[0];
     if(child->grammarSign == "IDN") {
         try {
-            std::cerr << "LexUnit: " << child->lexUnit << " " << child->local_scope.size() << std::endl;
+            //std::cerr << "LexUnit: " << child->lexUnit << " " << child->local_scope.size() << std::endl;
             std::shared_ptr<Node> complexCommand = child->getClosestScope();
             if(complexCommand->local_scope.count(child->lexUnit) > 0 ){
                 return complexCommand->local_scope[child->lexUnit];
@@ -278,6 +278,7 @@ Attributes AditiveExpression(std::shared_ptr<Node> node) {
             node->error();
         }
         Attributes mul_atr = MultiplicativeExpression(node->children[2]);
+        //std::cerr << mul_atr.fullType.type << std::endl;
         if(!mul_atr.fullType.isImplicitlyCastableToInt()) {
             std::cerr << "Aditive error, LINE 272" << std::endl;
             node->error();

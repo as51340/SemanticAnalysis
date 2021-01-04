@@ -41,7 +41,7 @@ bool FullType::isSeqXType() {
 }
 
 bool FullType::isImplicitlyCastableToInt() {
-    if((const_expr == true && type == Type::INT) || type == Type::CHAR) {
+    if((const_expr == true && type == Type::INT) || type == Type::CHAR  || type == Type::INT) {
         return true;
     }
     return false;
@@ -49,6 +49,7 @@ bool FullType::isImplicitlyCastableToInt() {
 
 // upitno
 bool FullType::isImplicitlyCastableToT(){
+    std::cerr << "Seq: " << this->seq << " isTType" << this->isTType() << " isConstTType" << isConstTType() << std::endl;
     if(this->isTType() && this->seq == false) return true;
     if(this->isConstTType() && this->seq == false) return true;
     return false;
@@ -56,6 +57,9 @@ bool FullType::isImplicitlyCastableToT(){
 
 
 bool FullType::isImplicitlyCastableToUnknownType(FullType fullType) {
+    if(type == fullType.type) {
+        return true;
+    }
     if(fullType.type == Type::INT) {
         return isImplicitlyCastableToInt();
     }
