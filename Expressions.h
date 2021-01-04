@@ -1,12 +1,14 @@
 #pragma once
+#include <iostream>
 #include <memory>
-#include "Node.h"
-#include "NodeExpression.h"
+#include <stdexcept>
 #include <string>
 #include <vector>
-#include <stdexcept>
-#include <iostream>
 
+#include "Node.h"
+#include "NodeExpression.h"
+
+// clang-format off
 Attributes PrimaryExpression(std::shared_ptr<Node>);
 
 char charIsCorrect(std::string lexUnit);
@@ -28,4 +30,3 @@ Attributes LogAndExpression(std::shared_ptr<Node> node);
 Attributes LogOrExpression(std::shared_ptr<Node> node);
 Attributes AssignmentExpression(std::shared_ptr<Node> node);
 Attributes Expression(std::shared_ptr<Node> node);
-Attributes TypeName(std::shared_ptr<Node>); //also in expressions

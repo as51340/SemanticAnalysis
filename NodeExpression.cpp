@@ -1,10 +1,11 @@
 #include "NodeExpression.h"
 
+// clang-format off
 Attributes::Attributes(){};
-Attributes::Attributes(FullType type, bool l_expr) : type(type), l_expr(l_expr){};
-Attributes(FullType type) : type(type) {};
+Attributes::Attributes(FullType fullType, bool l_expr) : fullType(fullType), l_expr(l_expr){};
+Attributes::Attributes(FullType fullType) : fullType(fullType) {};
 
-FullType::FullType() : type(TYPE::NONE) {};
+FullType::FullType() : type(Type::NONE) {};
 FullType::FullType(Type type) :type(type) {};
 
 
@@ -46,6 +47,13 @@ bool FullType::isImplicitlyCastableToInt() {
     return false;
 }
 
+// upitno
+bool FullType::isImplicitlyCastableToT(){
+    if(this->isTType() && this->seq == false) return true;
+    if(this->isConstTType() && this->seq == false) return true;
+    return false;
+}
+
 
 bool FullType::isImplicitlyCastableToUnknownType(FullType fullType) {
     if(fullType.type == Type::INT) {
@@ -70,4 +78,3 @@ bool FullType::isExplicitlyCastable(FullType fullType) { //pitaj boga da li je o
     //we do not handle NA for casting
     return true;
 }
- 

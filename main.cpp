@@ -1,14 +1,17 @@
+#include <cctype>
+#include <fstream>
 #include <iostream>
 #include <sstream>
-#include <vector>
-#include <fstream>
 #include <stdexcept>
-#include "Tree.h"
-#include "Node.h"
-#include <cctype>
+#include <vector>
 
+#include "Functions.h"
+#include "Node.h"
+#include "Tree.h"
+
+// clang-format off
 std::shared_ptr<Tree> tree = std::make_shared<Tree>();
-std::shared_ptr<Node> root = tree->root;
+std::shared_ptr<Node> root;
 
 void assign(std::string line, std::shared_ptr<Node> newNode) {    
     std::istringstream line_stream(line);
@@ -62,11 +65,15 @@ void parseInput() {
     std::shared_ptr<Node> newNode = std::make_shared<Node>();
     assign(line, newNode);
     tree->root = newNode;
+    root = tree->root;
     recursiveReading(tree->root, 0);
 }
 
 int main(void) {
     parseInput();
     tree->printTree();
+    std::cerr << "P A R S E D\n" << std::endl;
+
+    CompilationUnit(root);
     return 0;
 }
