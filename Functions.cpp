@@ -3,6 +3,7 @@
 #include <functional>
 #include <iostream>
 #include <unordered_map>
+#include <unordered_set>
 
 #include "Expressions.h"
 #include "Node.h"
@@ -13,6 +14,8 @@ extern std::shared_ptr<Node> root;
 
 bool inside_loop = false, inside_function = false;
 Attributes current_function_atr;
+
+std::unordered_set<std::string> function_declarations;
 
 // prints the node production
 void Error(std::shared_ptr<Node> node) {
@@ -42,7 +45,7 @@ void CompilationUnit(std::shared_ptr<Node> node) {
   for (auto &child : node->children) {
     std::string sign = child->grammarSign;
 
-    if (sign == "prijevodna_jedinica>")
+    if (sign == "<prijevodna_jedinica>")
       CompilationUnit(child);
     else if (sign == "<vanjska_deklaracija>")
       OuterDeclaration(child);
@@ -295,7 +298,7 @@ void JumpCommand(std::shared_ptr<Node> node) {
       Attributes expr_atr = Expression(child);
       if (!inside_function ||
           !expr_atr.fullType.isImplicitlyCastableToUnknownType(
-              current_function_atr.fullType))
+              current_function_atr.return_type))
         Error(node);
     }
   }
@@ -353,19 +356,21 @@ void InitDeclarator(std::shared_ptr<Node> node, FullType inherited_type) {
   }
 
   FullType direct = direct_atr.fullType;
-  //std::cerr << "Init: " << initializer_atr.fullType.type << " direct: "  << direct.type << std::endl;
-  //std::cerr << initializer_atr.isFunction << std::endl;
+  // std::cerr << "Init: " << initializer_atr.fullType.type << " direct: "  <<
+  // direct.type << std::endl; std::cerr << initializer_atr.isFunction <<
+  // std::endl;
   if (node->children.size() == 1) {
     if (direct.isConstTType())
       Error(node);
   } else { // tocka 3. str 69
     if (!direct.seq && direct.isXType()) {
-        //std::cerr << "tu" << std::endl;
-        //std::cerr << initializer_atr.isFunction << std::endl;
-      if (initializer_atr.isFunction || !initializer_atr.fullType.isImplicitlyCastableToUnknownType(direct) )
+      // std::cerr << "tu" << std::endl;
+      std::cerr << initializer_atr.isFunction << std::endl;
+      if (initializer_atr.isFunction ||
+          !initializer_atr.fullType.isImplicitlyCastableToUnknownType(direct))
         Error(node);
-    } else if (direct.isSeqXType() ) {
-      if (initializer_atr.elem_num > direct_atr.elem_num )
+    } else if (direct.isSeqXType()) {
+      if (initializer_atr.elem_num > direct_atr.elem_num)
         Error(node);
       for (auto &param : initializer_atr.parameters) {
         auto &[type, name] = param;
@@ -432,11 +437,13 @@ Attributes DirectDeclarator(std::shared_ptr<Node> node,
         atr.l_expr = false;
       }
     }
-    // clang-format on
   }
 
   scope_node->local_scope[name] = atr;
+  if (atr.isFunction) function_declarations.insert(name);
+
   return atr;
+  // clang-format on
 }
 
 Attributes Initializer(std::shared_ptr<Node> node) {
@@ -446,7 +453,8 @@ Attributes Initializer(std::shared_ptr<Node> node) {
 
     if (sign == "<izraz_pridruzivanja>") {
       assignment_atr = AssignmentExpression(child);
-      //std::cerr << "U assignmentu: " << assignment_atr.isFunction << std::endl;
+      // std::cerr << "U assignmentu: " << assignment_atr.isFunction <<
+      // std::endl;
       if (assignment_atr.elem_num != -1) {
         atr.elem_num = assignment_atr.elem_num + 1;
         atr.parameters = std::vector<Parameter>(atr.elem_num, {Type::CHAR});

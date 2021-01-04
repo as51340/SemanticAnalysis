@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
+#include <unordered_set>
 #include <vector>
 
 #include "Functions.h"
@@ -69,11 +70,36 @@ void parseInput() {
     recursiveReading(tree->root, 0);
 }
 
+extern std::unordered_set<std::string> function_declarations;
+
 int main(void) {
     parseInput();
     tree->printTree();
     //std::cerr << "P A R S E D\n" << std::endl;
 
     CompilationUnit(root);
+
+    std::ofstream ostream("errors.out");
+    if(root->local_scope.count("main")){
+        auto& main_atr = root->local_scope["main"];
+
+        if(main_atr.return_type.type != Type::INT ||
+           main_atr.return_type.const_expr == true ||
+           main_atr.return_type.seq == true || !main_atr.parameters.empty()){
+            ostream << "main" << std::endl; // bad main type
+            return 0;
+        }
+    }else {
+        ostream << "main" << std::endl; // main not declared
+        return 0;
+    }
+
+    for(std::string decl : function_declarations){
+        if(!root->local_scope[decl].defined){
+            ostream << "funkcija" << std::endl;
+            break;
+        }
+    }
+
     return 0;
 }
