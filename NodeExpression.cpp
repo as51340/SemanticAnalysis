@@ -76,9 +76,7 @@ bool FullType::isImplicitlyCastableToUnknownType(FullType fullType) {
 }
 
 bool FullType::isExplicitlyCastable(FullType fullType) { //pitaj boga da li je ovo dobro
-    if(type != Type::INT || fullType.type != Type::CHAR) {
-        return false;
-    }
-    //we do not handle NA for casting
-    return true;
+    if(isImplicitlyCastableToUnknownType(fullType)) return true;
+    if(fullType.type == Type::CHAR && type == Type::INT) return true;
+    return false;
 }

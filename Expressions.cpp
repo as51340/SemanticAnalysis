@@ -62,14 +62,19 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
     if(child->grammarSign == "IDN") {
         try {
             //std::cerr << "LexUnit: " << child->lexUnit << " " << child->local_scope.size() << std::endl;
-            std::shared_ptr<Node> complexCommand = child->getClosestScope();
+            /*std::shared_ptr<Node> complexCommand = child->getClosestScope();
+            std::cerr << complexCommand->local_scope.size() << std::endl;
             if(complexCommand->local_scope.count(child->lexUnit) > 0 ){
                 return complexCommand->local_scope[child->lexUnit];
             }
             std::cerr << "Cannot find variable in scope!" << std::endl;
-            node->error(); //print error
+            std::cerr << child->lexUnit << std::endl;
+            std::cerr << complexCommand->local_scope[child->lexUnit].isFunction << std::endl;
+            node->error(); //print error */
+            Attributes atr = child->findScope(child->lexUnit);
+            return atr;
             //exception and we need to print error
-        } catch(const std::logic_error&) {
+        } catch(const std::invalid_argument&) {
             std::cerr << "Logic error in scope!" << std::endl;
             node->error(); //print error
         }
