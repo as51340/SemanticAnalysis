@@ -15,19 +15,14 @@ Attributes current_function_atr;
 
 // prints the node production
 void Error(std::shared_ptr<Node> node) {
-    std::ofstream ostream("errors.out");
-  //std::cout << this->grammarSign << " ::=";
+  std::ofstream ostream("errors.out");
   ostream << node->grammarSign << " ::=";
   for (auto& child : node->children) {
-    //std::cout << ' ' << child->grammarSign;
     ostream << ' ' << child->grammarSign;
     if (child->isTerminal()) {
-      //std::cout << '(' << child->rowNumber << ',' << child->lexUnit << ')';  
-      ostream << '(' << child->rowNumber << ',' << child->lexUnit << ')';  
+      ostream << '(' << child->rowNumber << ',' << child->lexUnit << ')';
     }
-      
   }
-  //std::cout << std::endl;
   ostream << std::endl;
   exit(-1);  // we need to finish program
 }
@@ -313,7 +308,7 @@ void Declaration(std::shared_ptr<Node> node) {
     if (sign == "<ime_tipa>")
       type_name_atr = TypeName(child);
     else if (sign == "<lista_init_deklaratora>") {
-      if (type_name_atr.isFunction)
+      if (type_name_atr.isFunction)  // vjv ne treba
         InitDeclaratorList(child, type_name_atr.return_type);
       else
         InitDeclaratorList(child, type_name_atr.fullType);
@@ -335,7 +330,7 @@ void InitDeclaratorList(std::shared_ptr<Node> node, FullType inherited_type) {
 // zajebano
 // TODO: uljepsat uvjete
 void InitDeclarator(std::shared_ptr<Node> node, FullType inherited_type) {
-  Attributes direct_atr, initializer_atr;
+  Attributes initializer_atr, direct_atr;
   for (auto& child : node->children) {
     std::string sign = child->grammarSign;
 
@@ -345,15 +340,13 @@ void InitDeclarator(std::shared_ptr<Node> node, FullType inherited_type) {
       initializer_atr = Initializer(child);
   }
 
-  if (node->children.size() == 1) {
-    if (direct_atr.fullType.isConstTType()) Error(node);
+  FullType direct = direct_atr.fullType;
+  if (node->children.size() == 1 && direct.isConstTType()) {
+    Error(node);
   } else {  // tocka 3. str 69
-    if (!direct_atr.fullType.seq &&
-        (direct_atr.fullType.isTType() || direct_atr.fullType.isConstTType())) {
+    if (!direct.seq && direct.isXType()) {
       if (!initializer_atr.fullType.isImplicitlyCastableToT()) Error(node);
-    } else if (direct_atr.fullType.seq &&
-               (direct_atr.fullType.isTType() ||
-                direct_atr.fullType.isConstTType())) {
+    } else if (direct.isSeqXType()) {
       if (initializer_atr.elem_num > direct_atr.elem_num) Error(node);
       for (auto& param : initializer_atr.parameters) {
         auto& [type, name] = param;
@@ -374,9 +367,8 @@ Attributes DirectDeclarator(std::shared_ptr<Node> node,
 
   for (auto& child : node->children) {
     std::string sign = child->grammarSign;
-
     // clang-format off
-    if (sign == "<IDN>") {
+    if (sign == "IDN") {
       name = child->lexUnit;
       if (inherited_type.type == Type::VOID || node->local_scope.count(name)) Error(node);
       atr.fullType = inherited_type;
@@ -389,7 +381,7 @@ Attributes DirectDeclarator(std::shared_ptr<Node> node,
       atr.fullType.seq = true;
       atr.elem_num = val;
     }
-    else if (sign == "<KR_VOID>"){
+    else if (sign == "KR_VOID"){
       auto& local_scope = node->local_scope;
 
       if (local_scope.count(name)) { //if declared
