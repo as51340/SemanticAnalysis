@@ -288,7 +288,8 @@ void JumpCommand(std::shared_ptr<Node> node) {
       Error(node);
 
     if (sign == "KR_RETURN" && node->children.size() == 2 &&
-        (!inside_function || current_function_atr.fullType.type != Type::VOID))
+        (!inside_function ||
+         current_function_atr.return_type.type != Type::VOID))
       Error(node);
 
     if (sign == "<izraz>") {
