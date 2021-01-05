@@ -165,10 +165,12 @@ Attributes PostfixExpression(std::shared_ptr<Node> node) {
                 node->error();
             }
             FullType fullType = postfix_atr.fullType;
+            //std::cerr << postfix_atr.l_expr << std::endl;
             fullType.xType = true;
             fullType.seq = false;
             Attributes ret_atr(fullType);
             ret_atr.l_expr = true; //? if X != const(T) WTF TODO TODO TODO TODO TODO TODO TODO
+            if(postfix_atr.fullType.const_expr) ret_atr.l_expr = false;
             //tu ce vjv trebat postavit seq
             return ret_atr;
         } else if(secondChild->grammarSign == "L_ZAGRADA") {
@@ -475,6 +477,7 @@ Attributes AssignmentExpression(std::shared_ptr<Node> node) {
     } else if(firstChild->grammarSign == "<postfiks_izraz>") {
         Attributes post_atr = PostfixExpression(firstChild);
         //post_atr.fullType.seq = false;
+        //std::cerr << post_atr.l_expr << std::endl;
         if(post_atr.l_expr == false) {
             std::cerr << "Assignment error, LINE 431" << std::endl;
             node->error();

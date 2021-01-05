@@ -170,7 +170,7 @@ Parameter ParameterDeclaration(std::shared_ptr<Node> node) {
     if (sign == "<ime_tipa>") {
       type_name_atr = TypeName(child);
       if (type_name_atr.fullType.type == Type::VOID)
-        Error(child);
+        Error(node);
     } else if (sign == "IDN") {
       param.name = child->lexUnit;
     }
