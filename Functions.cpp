@@ -404,7 +404,7 @@ Attributes DirectDeclarator(std::shared_ptr<Node> node,
     else if(sign == "BROJ"){
       int val = std::stoi(child->lexUnit);
       if (inherited_type.type == Type::VOID || scope_node->local_scope.count(name)) Error(node);
-      if(val < 0 || val > 1024) Error(child);
+      if(val <= 0 || val > 1024) Error(node);
       atr.fullType = inherited_type;
       atr.fullType.seq = true;
       atr.elem_num = val;
