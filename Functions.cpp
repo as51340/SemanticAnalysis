@@ -186,7 +186,7 @@ void ComplexCommand(std::shared_ptr<Node> node,
                     std::vector<Parameter> parameters = {}) {
   for (auto parameter : parameters) {
     auto &[full_type, name] = parameter;
-    node->local_scope[name].fullType.type = full_type.type;
+    node->local_scope[name].fullType = full_type;
 
     if (!full_type.const_expr)
       node->local_scope[name].l_expr = true;

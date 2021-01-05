@@ -72,7 +72,7 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
             std::cerr << complexCommand->local_scope[child->lexUnit].isFunction << std::endl;
             node->error(); //print error */
             Attributes atr = child->findScope(child->lexUnit);
-            //std::cerr << atr.isFunction << std::endl;
+            //std::cerr << child->lexUnit << " " << atr.fullType.type << std::endl;
             return atr;
             //exception and we need to print error
         } catch(const std::invalid_argument&) {
@@ -150,6 +150,9 @@ Attributes PostfixExpression(std::shared_ptr<Node> node) {
         std::shared_ptr<Node> secondChild = node->children[1];
         if(secondChild->grammarSign == "L_UGL_ZAGRADA") {
             Attributes postfix_atr = PostfixExpression(node->children[0]);
+            //std::cerr << postfix_atr.fullType.isSeqXType() << std::endl;
+            //std::cerr << postfix_atr.fullType.type << std::endl;
+            //std::cerr << postfix_atr.fullType.seq << std::endl;
             if(!postfix_atr.fullType.isSeqXType()) {
                 std::cerr << "Postfix error, line 132" << std::endl;
                 node->error();
@@ -159,10 +162,12 @@ Attributes PostfixExpression(std::shared_ptr<Node> node) {
                 std::cerr << "Postfix error, LINE 137" << std::endl;
                 node->error();
             }
-            FullType fullType;
+            FullType fullType = postfix_atr.fullType;
+            fullType.seq = false;
             fullType.xType = true;
             Attributes ret_atr(fullType);
             ret_atr.l_expr = true; //? if X != const(T) WTF TODO TODO TODO TODO TODO TODO TODO
+            //tu ce vjv trebat postavit seq
             return ret_atr;
         } else if(secondChild->grammarSign == "L_ZAGRADA") {
             std::shared_ptr<Node> thirdChild = node->children[2];
@@ -231,6 +236,8 @@ Attributes UnaryExpression(std::shared_ptr<Node> node) {
         return PostfixExpression(firstChild);
     } else if(firstChild->grammarSign == "OP_INC" || firstChild->grammarSign == "OP_DEC") {
         Attributes unary_expr = UnaryExpression(node->children[1]);
+        //std::cerr << unary_expr.l_expr << std::endl;
+        //std::cerr << unary_expr.fullType.isImplicitlyCastableToInt() << std::endl;
         if(unary_expr.l_expr == false || !unary_expr.fullType.isImplicitlyCastableToInt()) {
             std::cerr << "Unarx error, LINE 206" << std::endl;
             node->error();
@@ -292,6 +299,7 @@ Attributes AditiveExpression(std::shared_ptr<Node> node) {
         return MultiplicativeExpression(firstChild);
     } else if(firstChild->grammarSign == "<aditivni_izraz>") {
         Attributes adi_atr = AditiveExpression(firstChild);
+        //std::cerr << adi_atr.fullType.type << std::endl;
         if(!adi_atr.fullType.isImplicitlyCastableToInt()) {
             std::cerr << "Aditive error, LINE 267" << std::endl;
             node->error();
@@ -464,6 +472,7 @@ Attributes AssignmentExpression(std::shared_ptr<Node> node) {
             node->error();
         }
         Attributes assign_atr = AssignmentExpression(node->children[2]);
+        //std::cerr << assign_atr.fullType.type << " " << post_atr.fullType.type << std::endl;
         if(!assign_atr.fullType.isImplicitlyCastableToUnknownType(post_atr.fullType)) {
             std::cerr << "Assignment error, LINE 436" << std::endl;
             node->error();

@@ -28,6 +28,7 @@ Attributes Node::findScope(std::string var) {
   while (true) {
       //std::cerr << currNode->grammarSign << std::endl;
     if (currNode->local_scope.count(var) > 0) {
+        //std::cerr << currNode->lexUnot << std::endl;
       return currNode->local_scope[var];
     }
     if (currNode->parent == nullptr) {  // parent was met
