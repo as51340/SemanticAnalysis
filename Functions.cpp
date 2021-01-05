@@ -395,9 +395,11 @@ Attributes DirectDeclarator(std::shared_ptr<Node> node,
     // clang-format off
     if (sign == "IDN") {
       name = child->lexUnit;
-      if (inherited_type.type == Type::VOID || scope_node->local_scope.count(name)) Error(node);
-      atr.fullType = inherited_type;
-      atr.l_expr = !inherited_type.const_expr;
+      if(node->children.size() == 1) { // 1. produkcija
+        if (inherited_type.type == Type::VOID || scope_node->local_scope.count(name)) Error(node);
+        atr.fullType = inherited_type;
+        atr.l_expr = !inherited_type.const_expr;
+      }
     }
     else if(sign == "BROJ"){
       int val = std::stoi(child->lexUnit);
