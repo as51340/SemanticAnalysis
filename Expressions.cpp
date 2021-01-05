@@ -73,6 +73,7 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
             node->error(); //print error */
             Attributes atr = child->findScope(child->lexUnit);
             //std::cerr << child->lexUnit << " " << atr.fullType.type << std::endl;
+            //if(atr.parameters.size() > 0) std::cerr << child->lexUnit << " " << atr.return_type.type << atr.parameters[0].fullType.const_expr << std::endl;
             return atr;
             //exception and we need to print error
         } catch(const std::invalid_argument&) {

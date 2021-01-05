@@ -62,6 +62,9 @@ bool FullType::isImplicitlyCastableToUnknownType(FullType fullType) {
         //std::cerr << "TU" << std::endl;
         return false;
     }
+    if(seq) {
+        if(const_expr && !fullType.const_expr) return false;
+    }
     if(fullType.type == Type::VOID) {
         return false;
     }
@@ -74,7 +77,7 @@ bool FullType::isImplicitlyCastableToUnknownType(FullType fullType) {
     if(isConstTType() && fullType.isTType() && type == fullType.type) {
         return true;
     }
-    if(isTType() && fullType.isConstTType() && type == fullType.type) {
+    if(isTType() && fullType.isConstTType() && type == fullType.type){
         return true;
     }
     if(seq && isTType() && !isConstTType() && fullType.seq && fullType.isConstTType() && type == fullType.type) {
