@@ -425,6 +425,7 @@ Attributes DirectDeclarator(std::shared_ptr<Node> node,
               scope_node->local_scope[name].return_type == inherited_type &&
               scope_node->local_scope[name].parameters.empty()))
           Error(node); // if already declared with different Attributes
+          return scope_node->local_scope[name];
       } else {  // declare
         atr.isFunction = true;
         atr.return_type = inherited_type;
@@ -439,6 +440,7 @@ Attributes DirectDeclarator(std::shared_ptr<Node> node,
               scope_node->local_scope[name].return_type == inherited_type &&
               EqualTypes(scope_node->local_scope[name].parameters, parameters)))
           Error(node); // if already declared with different Attributes
+          return scope_node->local_scope[name];
       } else {  // declare
         atr.isFunction = true;
         atr.return_type = inherited_type;
@@ -449,6 +451,7 @@ Attributes DirectDeclarator(std::shared_ptr<Node> node,
   }
 
   scope_node->local_scope[name] = atr;
+
   if(atr.isFunction) node->declared_functions[name] = atr;
   return atr;
   // clang-format on
