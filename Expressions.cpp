@@ -94,9 +94,7 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
         } catch(const std::exception&) {
             std::cerr << "Cannot convert to int" << std::endl;
             node->error(); //cannot be converted to int
-        } catch(std::out_of_range&) {
-            node->error();
-        }
+        } 
     } else if(child->grammarSign == "ZNAK") {
         try {
             IsCharCorrect(child->lexUnit);
@@ -165,8 +163,8 @@ Attributes PostfixExpression(std::shared_ptr<Node> node) {
                 node->error();
             }
             FullType fullType = postfix_atr.fullType;
-            fullType.seq = false;
             fullType.xType = true;
+            fullType.seq = false;
             Attributes ret_atr(fullType);
             ret_atr.l_expr = true; //? if X != const(T) WTF TODO TODO TODO TODO TODO TODO TODO
             //tu ce vjv trebat postavit seq
@@ -310,6 +308,11 @@ Attributes AditiveExpression(std::shared_ptr<Node> node) {
         //std::cerr << mul_atr.fullType.type << std::endl;
         if(!mul_atr.fullType.isImplicitlyCastableToInt()) {
             std::cerr << "Aditive error, LINE 272" << std::endl;
+            node->error();
+        }
+        //std::cerr << adi_atr.fullType.seq << " " << mul_atr.fullType.seq << std::endl;
+        if(adi_atr.fullType.seq || mul_atr.fullType.seq) {
+            std::cerr << "Aditive error, line 314" << std::endl;
             node->error();
         }
         return Attributes(FullType(Type::INT), 0);
@@ -469,6 +472,7 @@ Attributes AssignmentExpression(std::shared_ptr<Node> node) {
         return atr;
     } else if(firstChild->grammarSign == "<postfiks_izraz>") {
         Attributes post_atr = PostfixExpression(firstChild);
+        //post_atr.fullType.seq = false;
         if(post_atr.l_expr == false) {
             std::cerr << "Assignment error, LINE 431" << std::endl;
             node->error();

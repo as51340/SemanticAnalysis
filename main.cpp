@@ -92,11 +92,13 @@ extern bool EqualTypes(std::vector<Parameter> a, std::vector<Parameter> b);
 
 std::ofstream ostream2("errors.out");
 void dfs(std::shared_ptr<Node> node) {
-
+    
   for (auto &pair : node->declared_functions) {
+    //std::cerr << pair.first << std::endl;
     Attributes declared = pair.second;
     Attributes defined_f = root->local_scope[pair.first];
-
+    //std::cerr << root->local_scope.size() << std::endl;
+    //std::cerr << defined_f.defined << std::endl;
     if (!defined_f.defined || declared.return_type != defined_f.return_type ||
         !EqualTypes(declared.parameters, defined_f.parameters)) {
       ostream2 << "funkcija" << std::endl;

@@ -57,6 +57,7 @@ bool FullType::isImplicitlyCastableToT(){
 
 
 bool FullType::isImplicitlyCastableToUnknownType(FullType fullType) {
+    //std::cerr << type << " " << fullType.type << std::endl;
     if(fullType.seq != seq)  {
         //std::cerr << "TU" << std::endl;
         return false;
