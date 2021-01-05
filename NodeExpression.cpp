@@ -49,7 +49,7 @@ bool FullType::isImplicitlyCastableToInt() {
 
 // upitno
 bool FullType::isImplicitlyCastableToT(){
-    std::cerr << "Seq: " << this->seq << " isTType" << this->isTType() << " isConstTType" << isConstTType() << std::endl;
+    //std::cerr << "Seq: " << this->seq << " isTType" << this->isTType() << " isConstTType" << isConstTType() << std::endl;
     if(this->isTType() && this->seq == false) return true;
     if(this->isConstTType() && this->seq == false) return true;
     return false;

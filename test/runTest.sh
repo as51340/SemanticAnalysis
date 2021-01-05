@@ -1,25 +1,29 @@
 
 #!/bin/bash
 
-testFolder=$1
+test=$1
 
-cd ../build #sad sam u buildu od generatora
-cmake .. #currFolder = build
-make # kompajlaj, currFolder = build
-./semantic < ../test/"$testFolder"/test.in # na ulazu stablo, najprije provjeri da li je dobro stablo isparsirano, currFolder = build
-treeParsingFile="output.out" #u buildu current folder
-treeParsingFileCorrect="../test/"$testFolder"/test.in"
-if cmp -s "$treeParsingFile" "$treeParsingFileCorrect"; then
-	printf 'Tree parsed correctly!\n'
+cd ../build
+cmake ..
+make
+
+fileToTestIn=../test/"$test"/test.in
+fileToTestOut=../test/"$test"/test.out
+if [[ ! -f "$fileToTestIn" ]]; then
+	fileToTestIn=../test/"$test"/"$test".in
+	fileToTestOut=../test/"$test"/"$test".out
+fi
+./semantic < "$fileToTestIn"
+treeParsingFile="output.out"
+if cmp -s "$treeParsingFile" "$fileToTestIn"; then
+	outputFile="errors.out"
+	cmp -s "$outputFile" "$fileToTestOut"
+	status=$?
+	if [[ $status != 0 ]]; then
+			printf 'Test failed\n'
+	else
+		printf 'test passed\n'
+	fi
 else
 	printf 'Tree not parsed correctly, not running test!\n'
-	exit 1
-fi
-cd .. #u rootu
-outputFile="build/errors.out"
-testFile="test/"$testFolder"/test.out"
-if cmp -s "$outputFile" "$testFile"; then
-	printf 'Test passed\n'
-else
-	printf 'Test failed\n'
 fi
