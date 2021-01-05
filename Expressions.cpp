@@ -114,7 +114,7 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
             atr.l_expr = false;
             //std::cerr << child->lexUnit << std::endl;
             //std::cerr << child->lexUnit.size() << std::endl;
-            atr.elem_num = child->lexUnit.size();
+            atr.elem_num = child->lexUnit.size() -1;
             return atr;
         } catch(const std::exception&) {
             std::cerr << "Char sequence is not correct" << std::endl;
