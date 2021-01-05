@@ -352,6 +352,8 @@ void InitDeclarator(std::shared_ptr<Node> node, FullType inherited_type) {
     else if (sign == "<inicijalizator>")
       initializer_atr = Initializer(child);
   }
+  /*std::cerr << initializer_atr.elem_num << std::endl;
+  std::cerr << direct_atr.elem_num << std::endl; */
   FullType direct = direct_atr.fullType;
   if (node->children.size() == 1) {
     if (direct.isConstTType())

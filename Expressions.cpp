@@ -106,15 +106,15 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
         
     } else if(child->grammarSign == "NIZ_ZNAKOVA") {
         try {
-            isSeqCharCorrect(child->lexUnit);
+            std::string s = isSeqCharCorrect(child->lexUnit);
             Attributes atr;
             atr.fullType.seq = true;
             atr.fullType.const_expr = true;
             atr.fullType.type = Type::CHAR;
             atr.l_expr = false;
-            //std::cerr << child->lexUnit << std::endl;
-            //std::cerr << child->lexUnit.size() << std::endl;
-            atr.elem_num = child->lexUnit.size() -1;
+            //std::cerr << s << std::endl;
+            //std::cerr << s.size() << std::endl;
+            atr.elem_num = s.size();
             return atr;
         } catch(const std::exception&) {
             std::cerr << "Char sequence is not correct" << std::endl;
