@@ -113,6 +113,7 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
             atr.fullType.const_expr = true;
             atr.fullType.type = Type::CHAR;
             atr.l_expr = false;
+            atr.str = true;
             //std::cerr << s << std::endl;
             //std::cerr << s.size() << std::endl;
             atr.elem_num = s.size();

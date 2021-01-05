@@ -366,6 +366,8 @@ void InitDeclarator(std::shared_ptr<Node> node, FullType inherited_type) {
           !initializer_atr.fullType.isImplicitlyCastableToUnknownType(direct))
         Error(node);
     } else if (direct.isSeqXType()) {
+      if (initializer_atr.fullType.seq && !initializer_atr.str)
+        Error(node);
       if (initializer_atr.elem_num == -1 &&
           !initializer_atr.fullType.isImplicitlyCastableToUnknownType(direct))
         Error(node);
@@ -466,9 +468,11 @@ Attributes Initializer(std::shared_ptr<Node> node) {
       assignment_atr = AssignmentExpression(child);
       // std::cerr << "U assignmentu: " << assignment_atr.isFunction <<
       // std::endl;
+      atr.str = assignment_atr.str;
       if (assignment_atr.elem_num != -1) {
         atr.elem_num = assignment_atr.elem_num + 1;
         atr.parameters = std::vector<Parameter>(atr.elem_num, {Type::CHAR});
+        atr.fullType.seq = assignment_atr.fullType.seq;
       } else {
         atr.fullType = assignment_atr.fullType;
       }

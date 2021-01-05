@@ -1,13 +1,13 @@
 #pragma once
+#include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
-#include <iostream>
 
 enum Type { NONE = 0, VOID, INT, CHAR };
 
 class FullType {
- public:
+public:
   Type type;
 
   bool const_expr = false;
@@ -18,10 +18,10 @@ class FullType {
 
   bool xType = false;
 
- private:
+private:
   auto tied() const { return std::tie(type, const_expr, seq, tType, xType); }
 
- public:
+public:
   FullType();
   FullType(Type);
 
@@ -41,11 +41,11 @@ class FullType {
 
   bool isImplicitlyCastableToT();
 
-  bool operator==(FullType const& other) const {
+  bool operator==(FullType const &other) const {
     return this->tied() == other.tied();
   }
 
-  bool operator!=(FullType const& other) const {
+  bool operator!=(FullType const &other) const {
     return this->tied() != other.tied();
   }
 };
@@ -56,19 +56,19 @@ struct Parameter {
 };
 
 class Attributes {
- public:
+public:
   // expression attributes
   // Type type;
 
   bool l_expr = false;
   int elem_num = -1;
-
+  bool str = false;
   // bool const_expr = false;
 
   FullType fullType;
 
   // function attributes
-  std::vector<Parameter> parameters;  // type name
+  std::vector<Parameter> parameters; // type name
   FullType return_type;
   bool isFunction = false;
   bool defined = false;
