@@ -372,7 +372,7 @@ void InitDeclarator(std::shared_ptr<Node> node, FullType inherited_type) {
         Error(node);
       for (auto &param : initializer_atr.parameters) {
         auto &[type, name] = param;
-        if (!type.isImplicitlyCastableToT()) {
+        if (!type.isImplicitlyCastableToUnknownType(direct)) {
           Error(node);
         }
       }
