@@ -94,6 +94,8 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
         } catch(const std::exception&) {
             std::cerr << "Cannot convert to int" << std::endl;
             node->error(); //cannot be converted to int
+        } catch(std::out_of_range&) {
+            node->error();
         }
     } else if(child->grammarSign == "ZNAK") {
         try {
