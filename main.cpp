@@ -18,14 +18,26 @@ void assign(std::string line, std::shared_ptr<Node> newNode) {
     std::istringstream line_stream(line);
     std::string item;
     std::vector<std::string> elements;
-    while(line_stream >> item) {
+    int i = 0;
+    while(line_stream >> item && i < 2) {
+        i++;
         elements.push_back(item);
     }
+    if(elements.size() == 2) {
+        std::size_t found = line.find('\"');
+        if(found != std::string::npos && line.find('\"', found+1) != std::string::npos) {
+            elements.push_back(line.substr(found));
+        } else {
+            line_stream >> item;
+            elements.push_back(item);
+        }
+    }
+    
     if(elements.size() == 1) {
         if(elements[0].compare("$") == 0) {
             //std::cerr << "Radim novi epsilon znak\n";
             newNode->grammarSign = "$";
-        } else  {
+        } else {
             // std::cerr << "Radim novi nezavrsni znak\n";
             newNode->grammarSign = elements[0];
         }
@@ -34,7 +46,11 @@ void assign(std::string line, std::shared_ptr<Node> newNode) {
         newNode->grammarSign = elements[0];
         newNode->rowNumber = stoi(elements[1]);
         newNode->lexUnit = elements[2];
-    } else {
+    }  else {
+        std::cerr << elements.size() << std::endl;
+        for(int i = 0; i < elements.size(); i++) {
+            std::cerr << elements[i] << "      ";
+        }
         throw std::invalid_argument("Parser ne dela dobro!\n");
     }
 }

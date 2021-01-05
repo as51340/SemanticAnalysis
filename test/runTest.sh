@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 testFolder=$1
