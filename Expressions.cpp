@@ -112,6 +112,9 @@ Attributes PrimaryExpression(std::shared_ptr<Node> node) {
             atr.fullType.const_expr = true;
             atr.fullType.type = Type::CHAR;
             atr.l_expr = false;
+            //std::cerr << child->lexUnit << std::endl;
+            //std::cerr << child->lexUnit.size() << std::endl;
+            atr.elem_num = child->lexUnit.size();
             return atr;
         } catch(const std::exception&) {
             std::cerr << "Char sequence is not correct" << std::endl;
