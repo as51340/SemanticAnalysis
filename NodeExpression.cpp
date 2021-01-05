@@ -41,6 +41,7 @@ bool FullType::isSeqXType() {
 }
 
 bool FullType::isImplicitlyCastableToInt() {
+    if(seq) return false;
     if((const_expr == true && type == Type::INT) || type == Type::CHAR  || type == Type::INT) {
         return true;
     }
