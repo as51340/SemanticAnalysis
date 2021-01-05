@@ -100,7 +100,7 @@ void dfs(std::shared_ptr<Node> node) {
     if (!defined_f.defined || declared.return_type != defined_f.return_type ||
         !EqualTypes(declared.parameters, defined_f.parameters)) {
       ostream2 << "funkcija" << std::endl;
-      return;
+      exit(1);
     }
   }
 

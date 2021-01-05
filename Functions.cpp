@@ -355,8 +355,7 @@ void InitDeclarator(std::shared_ptr<Node> node, FullType inherited_type) {
     else if (sign == "<inicijalizator>")
       initializer_atr = Initializer(child);
   }
-  /*std::cerr << initializer_atr.elem_num << std::endl;
-  std::cerr << direct_atr.elem_num << std::endl; */
+
   FullType direct = direct_atr.fullType;
   if (node->children.size() == 1) {
     if (direct.isConstTType())
@@ -367,6 +366,9 @@ void InitDeclarator(std::shared_ptr<Node> node, FullType inherited_type) {
           !initializer_atr.fullType.isImplicitlyCastableToUnknownType(direct))
         Error(node);
     } else if (direct.isSeqXType()) {
+      if (initializer_atr.elem_num == -1 &&
+          !initializer_atr.fullType.isImplicitlyCastableToUnknownType(direct))
+        Error(node);
       if (initializer_atr.elem_num > direct_atr.elem_num)
         Error(node);
 
@@ -498,6 +500,7 @@ Attributes AssignmentExpressionList(std::shared_ptr<Node> node) {
     atr.elem_num = 1;
   }
 
+  atr.fullType.seq = true;
   atr.parameters.push_back({assignment_atr.fullType});
   return atr;
 }
